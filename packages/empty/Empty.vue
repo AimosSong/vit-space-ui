@@ -8,7 +8,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   description: '暂无数据',
   image: '1',
-  imageStyle: () => { return {} }
+  imageStyle: () => ({})
 })
 </script>
 <template>
@@ -25,29 +25,31 @@ withDefaults(defineProps<Props>(), {
 </template>
 <style lang="less" scoped>
 .m-empty {
-  font-size: 0;
   text-align: center;
   .u-empty {
     display: inline-block;
+    vertical-align: bottom;
   }
   .u-empty-1 {
     display: inline-block;
+    vertical-align: bottom;
     width: 184px;
     height: 100px;
   }
   .u-empty-2 {
     display: inline-block;
+    vertical-align: bottom;
     width: 64px;
     height: 40px;
   }
   .u-description {
     margin-top: 8px;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.88);
-    line-height: 1.571;
+    color: rgba(0, 0, 0, .88);
+    line-height: 1.5714285714285714;
   }
   .gray {
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, .25);
   }
 }
 </style>

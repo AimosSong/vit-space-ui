@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
     metadata: 当页面加载后仅加载视频的元数据（例如长度），建议使用metadata，以便视频自动获取第一帧作为封面poster
     none: 页面加载后不应加载视频
   */
-  preload: 'auto',
+  preload: 'metadata',
   showPlay: true,
   /*
     fit可选属性：
@@ -125,7 +125,7 @@ onMounted(() => {
       :muted="autoplay || muted"
       :preload="preload"
       crossorigin="anonymous"
-      @loadeddata="poster ? () => false : getPoster()"
+      @loadedmetadata="poster ? () => false : getPoster()"
       @pause="showPlay ? onPause() : () => false"
       @playing="showPlay ? onPlaying() : () => false"
       @click.prevent.once="onPlay"
@@ -157,7 +157,7 @@ onMounted(() => {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: rgba(0,0,0,.6);
+    background-color: rgba(0, 0, 0, .6);
     pointer-events: none;
     transition: background-color .3s;
     .u-svg {
@@ -176,7 +176,7 @@ onMounted(() => {
 .u-video-hover {
   &:hover {
     .m-icon-play {
-      background-color: rgba(0,0,0,.7);
+      background-color: rgba(0, 0, 0, .7);
     }
   }
 }

@@ -8,85 +8,128 @@ import {
   throttle,
   debounce,
   add,
-  downloadFile
+  downloadFile,
+  formatNumber,
+  toggleDark
 } from './utils'
 import type { App } from 'vue'
+import Alert from './alert'
+import Avatar from './avatar'
+import BackTop from './backtop'
+import Badge from './badge'
 import Breadcrumb from './breadcrumb'
 import Button from './button'
+import Card from './card'
 import Carousel from './carousel'
 import Cascader from './cascader'
 import Checkbox from './checkbox'
+import Col from './col'
 import Collapse from './collapse'
 import Countdown from './countdown'
 import DatePicker from './datepicker'
+import Descriptions from './descriptions'
+import DescriptionsItem from './descriptionsitem'
 import Dialog from './dialog'
 import Divider from './divider'
+import Drawer from './drawer'
+import Ellipsis from './ellipsis'
 import Empty from './empty'
+import Flex from './flex'
 import Image from './image'
+import Input from './input'
 import InputNumber from './inputnumber'
 import Message from './message'
 import Modal from './modal'
 import Notification from './notification'
+import NumberAnimation from './numberanimation'
 import Pagination from './pagination'
+import Popconfirm from './popconfirm'
 import Progress from './progress'
 import QRCode from './qrcode'
 import Radio from './radio'
 import Rate from './rate'
+import Result from './result'
+import Row from './row'
 import Select from './select'
 import Slider from './slider'
+import Space from './space'
 import Spin from './spin'
+import Statistic from './statistic'
 import Steps from './steps'
 import Swiper from './swiper'
 import Switch from './switch'
 import Table from './table'
 import Tabs from './tabs'
+import Tag from './tag'
+import Textarea from './textarea'
 import TextScroll from './textscroll'
 import Timeline from './timeline'
 import Tooltip from './tooltip'
 import Upload from './upload'
 import Video from './video'
 import Waterfall from './waterfall'
+import Watermark from './watermark'
 
 // 所有组件列表
 const components = [
+  Alert,
+  Avatar,
+  BackTop,
+  Badge,
   Breadcrumb,
   Button,
+  Card,
   Carousel,
   Cascader,
   Checkbox,
+  Col,
   Collapse,
   Countdown,
   DatePicker,
+  Descriptions,
+  DescriptionsItem,
   Dialog,
   Divider,
+  Drawer,
+  Ellipsis,
   Empty,
+  Flex,
   Image,
+  Input,
   InputNumber,
   Message,
   Modal,
   Notification,
+  NumberAnimation,
   Pagination,
+  Popconfirm,
   Progress,
   QRCode,
   Radio,
   Rate,
+  Result,
+  Row,
   Select,
   Slider,
+  Space,
   Spin,
+  Statistic,
   Steps,
   Swiper,
   Switch,
   Table,
   Tabs,
+  Tag,
+  Textarea,
   TextScroll,
   Timeline,
   Tooltip,
   Upload,
   Video,
-  Waterfall
+  Waterfall,
+  Watermark
 ]
 
-console.log('components:', components)
 // 定义 install 方法
 const install = (app: App): void => {
   // 遍历注册所有组件
@@ -109,44 +152,67 @@ export {
   throttle,
   debounce,
   add,
-  downloadFile
+  downloadFile,
+  formatNumber,
+  toggleDark
 }
 export {
+  Alert,
+  Avatar,
+  BackTop,
+  Badge,
   Breadcrumb,
   Button,
+  Card,
   Carousel,
   Cascader,
   Checkbox,
+  Col,
   Collapse,
   Countdown,
   DatePicker,
+  Descriptions,
+  DescriptionsItem,
   Dialog,
   Divider,
+  Drawer,
+  Ellipsis,
   Empty,
+  Flex,
   Image,
+  Input,
   InputNumber,
   Message,
   Modal,
   Notification,
+  NumberAnimation,
   Pagination,
+  Popconfirm,
   Progress,
   QRCode,
   Radio,
   Rate,
+  Result,
+  Row,
   Select,
   Slider,
+  Space,
   Spin,
+  Statistic,
   Steps,
   Swiper,
   Switch,
   Table,
   Tabs,
+  Tag,
+  Textarea,
   TextScroll,
   Timeline,
   Tooltip,
   Upload,
   Video,
-  Waterfall
+  Waterfall,
+  Watermark
 }
 
 const VueAmazingUI = {

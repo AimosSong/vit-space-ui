@@ -15,9 +15,9 @@ interface Pagination {
 interface Props {
   columns?: Column[] // 表格列的配置项
   dataSource?: any[] // 表格数据数组
-  pagination?: Pagination // 分页器配置
-  showPagination?: boolean // 是否显示分页器
-  hideOnSinglePage?: boolean // 只有一页时是否隐藏分页器
+  pagination?: Pagination // 分页配置
+  showPagination?: boolean // 是否显示分页
+  hideOnSinglePage?: boolean // 只有一页时是否隐藏分页
   total?: number // 数据总数
   loading?: boolean // 是否加载中
 }
@@ -31,7 +31,7 @@ withDefaults(defineProps<Props>(), {
   loading: false
 })
 const emit = defineEmits(['change'])
-function changePage (pager: {page: number, pageSize: number}) { // 分页器回调
+function changePage (pager: {page: number, pageSize: number}) { // 分页回调
   emit('change', pager)
 }
 </script>
@@ -77,32 +77,33 @@ function changePage (pager: {page: number, pageSize: number}) { // 分页器回�
 </template>
 <style lang="less" scoped>
 .m-table-wrap {
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, .65);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.5714285714285714;
+  border-radius: 8px 8px 0 0;
   .m-table {
     display: table;
     table-layout: fixed;
     width: 100%;
     text-align: left;
-    border-radius: 4px 4px 0 0;
+    border-radius: 8px 8px 0 0;
     border-collapse: separate;
     border-spacing: 0;
     margin: 0;
     .m-th {
       padding: 16px;
-      color: rgba(0, 0, 0, 0.85);
+      color: rgba(0, 0, 0, .85);
       font-weight: 500;
       text-align: left;
       background: #fafafa;
       border: none;
-      border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid #f0f0f0;;
       transition: background .3s ease;
       &:first-child {
-        border-top-left-radius: 4px;
+        border-top-left-radius: 8px;
       }
       &:last-child {
-        border-top-right-radius: 4px;
+        border-top-right-radius: 8px;
       }
     }
     .m-body {
@@ -125,7 +126,7 @@ function changePage (pager: {page: number, pageSize: number}) { // 分页器回�
         .m-td-empty {
           padding: 16px;
           border: none;
-          border-bottom: 1px solid #e8e8e8;
+          border-bottom: 1px solid #f0f0f0;;
           .empty {
             margin: 32px 0;
           }
@@ -139,14 +140,14 @@ function changePage (pager: {page: number, pageSize: number}) { // 分页器回�
       .m-td {
         padding: 16px;
         border: none;
-        border-bottom: 1px solid #e8e8e8;
+        border-bottom: 1px solid #f0f0f0;;
         transition: background .3s;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
       &:hover {
-        background-color: saturate(fade(@themeColor, 12%), 30%);
+        background-color: #fafafa;
       }
     }
   }

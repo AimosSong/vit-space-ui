@@ -1,4 +1,7 @@
-# 日期选择 DatePicker
+# 日期选择 DatePicker<Tag color="volcano" style="vertical-align: top; margin-left: 6px;">{{ pkg.dependencies['@vuepic/vue-datepicker'] }}</Tag>
+
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
 
 <br/>
 
@@ -15,13 +18,15 @@
 - [date-fns](https://date-fns.org/)
 
 <script setup lang="ts">
+import pkg from '../../../package.json'
 import { ref, watchEffect } from 'vue'
 import { format, endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths, addDays, startOfWeek, endOfWeek, addHours, addMinutes, addSeconds } from 'date-fns'
 
 const dateValue = ref(format(new Date(), 'yyyy-MM-dd'))
 const dateTimeValue = ref(format(new Date(), 'yyyy-MM-dd HH:mm:ss'))
-const rangeValue = ref([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
+const rangeValue = ref<string[]>([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
 console.log(addHours(Date.now(), 1))
+console.log('rangeValue', rangeValue.value)
 
 const timeRangeValue = ref([
   {
@@ -35,14 +40,14 @@ const timeRangeValue = ref([
     seconds: addSeconds(Date.now(), 30).getSeconds()
   }
 ])
-const presetRanges = ref([
-  { label: 'Today', range: [new Date(), new Date()] },
-  { label: 'This month', range: [startOfMonth(new Date()), endOfMonth(new Date())] },
+const presetDates = ref([
+  { label: 'Today', value: [new Date(), new Date()] },
+  { label: 'This month', value: [startOfMonth(new Date()), endOfMonth(new Date())] },
   {
     label: 'Last month',
-    range: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))],
+    value: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))],
   },
-  { label: 'This year', range: [startOfYear(new Date()).getTime(), endOfYear(new Date()).getTime()] }
+  { label: 'This year', value: [startOfYear(new Date()).getTime(), endOfYear(new Date()).getTime()] }
 ])
 const timeValue = ref({
   hours: new Date().getHours(),
@@ -224,7 +229,7 @@ watchEffect(() => {
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { format, addDays } from 'date-fns'
-const rangeValue = ref([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
+const rangeValue = ref<string[]>([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
 watchEffect(() => {
   console.log('rangeValue:', rangeValue.value)
 })
@@ -258,7 +263,7 @@ watchEffect(() => {
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { format, addDays } from 'date-fns'
-const rangeValue = ref([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
+const rangeValue = ref<string[]>([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
 watchEffect(() => {
   console.log('rangeValue:', rangeValue.value)
 })
@@ -289,7 +294,7 @@ watchEffect(() => {
   format="yyyy-MM-dd"
   :width="280"
   range
-  :presetRanges="presetRanges"
+  :preset-dates="presetDates"
   multi-calendars
   v-model="rangeValue" />
 
@@ -299,15 +304,15 @@ watchEffect(() => {
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { format, addDays, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear } from 'date-fns'
-const rangeValue = ref([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
-const presetRanges = ref([
-  { label: 'Today', range: [new Date(), new Date()] },
-  { label: 'This month', range: [startOfMonth(new Date()), endOfMonth(new Date())] },
+const rangeValue = ref<string[]>([format(new Date(), 'yyyy-MM-dd'), format(addDays(new Date(), 1), 'yyyy-MM-dd')])
+const presetDates = ref([
+  { label: 'Today', value: [new Date(), new Date()] },
+  { label: 'This month', value: [startOfMonth(new Date()), endOfMonth(new Date())] },
   {
     label: 'Last month',
-    range: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))],
+    value: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))],
   },
-  { label: 'This year', range: [startOfYear(new Date()).getTime(), endOfYear(new Date()).getTime()] }
+  { label: 'This year', value: [startOfYear(new Date()).getTime(), endOfYear(new Date()).getTime()] }
 ])
 watchEffect(() => {
   console.log('rangeValue:', rangeValue.value)
@@ -320,7 +325,7 @@ watchEffect(() => {
     format="yyyy-MM-dd"
     :width="280"
     range
-    :presetRanges="presetRanges"
+    :preset-dates="presetDates"
     multi-calendars
     v-model="rangeValue" />
 </template>
@@ -557,12 +562,13 @@ watchEffect(() => {
 
 ## APIs
 
-*更多使用 APIs 请参考[官方文档](https://vue3datepicker.com/)*
+*更多使用 APIs 请参考 [官方文档](https://vue3datepicker.com/)*
 
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
-width | 日期选择器宽度，单位px | number | 180 | false
+width | 日期选择器宽度，单位`px` | number | 180 | false
 mode | 选择器模式 | 'time' &#124; 'date' &#124; 'week' &#124; 'month' &#124; 'year' | 'date' | false
 showTime | 是否增加时间选择 | boolean | false | false
 showToday | 是否展示”今天“按钮 | boolean | false | false
-modelType | v-model 值类型，可选时间戳(timestamp)、字符串(format) | 'timestamp' &#124; 'format' | 'format' | false
+modelValue <Tag color="cyan">v-model</Tag> | 双向绑定值 | number &#124; string &#124; object &#124; array | null | false
+modelType | `v-model` 值类型，可选时间戳(`timestamp`)、字符串(`format`) | 'timestamp' &#124; 'format' | 'format' | false

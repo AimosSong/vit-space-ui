@@ -1,4 +1,7 @@
-# 触摸滑动插件 Swiper
+# 触摸滑动插件 Swiper<Tag color="volcano" style="vertical-align: top; margin-left: 6px;">{{ pkg.dependencies.swiper }}</Tag>
+
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
 
 <br/>
 
@@ -17,16 +20,16 @@
 - [Swiper Demos](https://swiperjs.com/demos)
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue'
+import { ref, shallowReactive, onBeforeMount } from 'vue'
+import pkg from '../../../package.json'
 
 const images = ref<any[]>([])
-
 function loadImages () {
   for (let i = 1; i <= 10; i++) {
     images.value.push({
       title: `image-${i}`,
       link: '',
-      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/${i}.jpg`
+      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/${i}.jpg`
     })
   }
 }
@@ -35,6 +38,19 @@ onBeforeMount(() => { // 组件已完成响应式状态设置，但未创建DOM�
 })
 function onChange () {
   console.log('slider change')
+}
+const navigation = shallowReactive<{[key: string]: any}>({})
+function onSwiper (swiper: any) {
+  navigation.prevEl = swiper.navigation.prevEl
+  navigation.prevEl.style.display = 'none'
+  navigation.nextEl = swiper.navigation.nextEl
+  navigation.nextEl.style.display = 'none'
+}
+function onPrev () {
+  navigation.prevEl.click()
+}
+function onNext () {
+  navigation.nextEl.click()
 }
 </script>
 
@@ -53,13 +69,12 @@ function onChange () {
 import { ref, onBeforeMount } from 'vue'
 
 const images = ref<any[]>([])
-
 function loadImages () {
   for (let i = 1; i <= 10; i++) {
     images.value.push({
       title: `image-${i}`,
       link: '',
-      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/${i}.jpg`
+      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/${i}.jpg`
     })
   }
 }
@@ -94,13 +109,12 @@ function onChange () {
 import { ref, onBeforeMount } from 'vue'
 
 const images = ref<any[]>([])
-
 function loadImages () {
   for (let i = 1; i <= 10; i++) {
     images.value.push({
       title: `image-${i}`,
       link: '',
-      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/${i}.jpg`
+      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/${i}.jpg`
     })
   }
 }
@@ -121,6 +135,86 @@ onBeforeMount(() => { // 组件已完成响应式状态设置，但未创建DOM�
 
 :::
 
+## 信息展播
+
+<Space>
+  <Button @click="onPrev">Prev</Button>
+  <Button @click="onNext">Next</Button>
+</Space>
+<br/>
+<br/>
+<Swiper
+  :images="images"
+  type="broadcast"
+  :pagination="{
+    dynamicBullets: true,
+    clickable: true
+  }"
+  :height="200"
+  :slides-per-view="3"
+  :space-between="30"
+  loop
+  mousewheel
+  @swiper="onSwiper" />
+
+::: details Show Code
+
+```vue
+<script setup lang="ts">
+import { ref, shallowReactive, onBeforeMount } from 'vue'
+
+const images = ref<any[]>([])
+function loadImages () {
+  for (let i = 1; i <= 10; i++) {
+    images.value.push({
+      title: `image-${i}`,
+      link: '',
+      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/${i}.jpg`
+    })
+  }
+}
+onBeforeMount(() => { // 组件已完成响应式状态设置，但未创建DOM节点
+  loadImages()
+})
+const navigation = shallowReactive<{[key: string]: any}>({})
+function onSwiper (swiper: any) {
+  navigation.prevEl = swiper.navigation.prevEl
+  navigation.prevEl.style.display = 'none'
+  navigation.nextEl = swiper.navigation.nextEl
+  navigation.nextEl.style.display = 'none'
+}
+function onPrev () {
+  navigation.prevEl.click()
+}
+function onNext () {
+  navigation.nextEl.click()
+}
+</script>
+<template>
+  <Space>
+    <Button @click="onPrev">Prev</Button>
+    <Button @click="onNext">Next</Button>
+  </Space>
+  <br/>
+  <br/>
+  <Swiper
+    :images="images"
+    type="broadcast"
+    :pagination="{
+      dynamicBullets: true,
+      clickable: true
+    }"
+    :height="200"
+    :slides-per-view="3"
+    :space-between="30"
+    loop
+    mousewheel
+    @swiper="onSwiper" />
+</template>
+```
+
+:::
+
 ## APIs
 
 参数 | 说明 | 类型 | 默认值 | 必传
@@ -128,11 +222,11 @@ onBeforeMount(() => { // 组件已完成响应式状态设置，但未创建DOM�
 images | 轮播图片数组 | Image[] | [] | true
 width | 图片宽度 | number &#124; string | '100%' | false
 height | 图片高度 | number &#124; string  | '100vh' | false
-type | banner轮播图模式、carousel走马灯模式 | 'banner' &#124; 'carousel' | 'banner' | false
+type | `banner`: 轮播图模式；`carousel`: 走马灯模式；`broadcast`: 信息展播模式 | 'banner' &#124; 'carousel' &#124; 'broadcast' | 'banner' | false
 navigation | 是否显示导航 | boolean | true | false
-delay | 自动切换的时间间隔（type: banner时生效），单位ms | number | 3000 | false
+delay | 自动切换的时间间隔（`type: banner`时生效），单位`ms` | number | 3000 | false
 swipe | 是否可以鼠标拖动 | boolean | true | false
-preloaderColor | 预加载时的loading颜色 | 'theme' &#124; 'white' &#124; 'black' | 'theme' | false
+preloaderColor | 预加载时的 `loading` 颜色 | 'theme' &#124; 'white' &#124; 'black' | 'theme' | false
 
 ## Image Type
 
@@ -146,4 +240,5 @@ src | 图像地址 | string | true
 
 事件名称 | 说明 | 参数
 -- | -- | --
+swiper | `Swiper`初始化后的回调 | (swiper: any) => void
 change | 轮播图片变化时的回调 | () => void

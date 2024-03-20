@@ -1,5 +1,8 @@
 # 空状态 Empty
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *空状态时的展示占位图*
@@ -10,7 +13,7 @@
 
 ## 基本使用
 
-**预置风格1**
+- **预置风格 1**
 
 <Empty />
 
@@ -24,9 +27,7 @@
 
 :::
 
-<br/>
-
-**预置风格2**
+- **预置风格 2**
 
 <Empty image="2" />
 
@@ -79,18 +80,18 @@
 ```vue
 <template>
   <Empty
-  image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
-  :image-style="{
-    width: '100px',
-    height: '60px'
-  }">
-  <template #description>
-    <span>
-      Customize
-      <a href="#API">Description</a>
-    </span>
-  </template>
-</Empty>
+    image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+    :image-style="{
+      width: '100px',
+      height: '60px'
+    }">
+    <template #description>
+      <span>
+        Customize
+        <a href="#API">Description</a>
+      </span>
+    </template>
+  </Empty>
 </template>
 ```
 
@@ -101,5 +102,5 @@
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
 description | 自定义描述内容 | string &#124; slot | '暂无数据' | false
-image | 显示图片的链接，或者 选择预置的两种风格图片，可选 '1' &#124; '2' | string | '1' | false
+image | 显示图片的链接，或者 选择预置的两种风格图片，可选 `'1'` &#124; `'2'` | string | '1' | false
 imageStyle | 图片样式 | CSSProperties | {} | false

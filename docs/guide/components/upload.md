@@ -1,5 +1,8 @@
 # 上传 Upload
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *文件选择上传和拖拽上传控件*
@@ -16,17 +19,17 @@ const files = ref([])
 const fileList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   },
   {
     name: 'Markdown.pdf',
-    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Markdown.pdf'
+    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Markdown.pdf'
   }
 ])
 const imageList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   }
 ])
 watchEffect(() => {
@@ -56,7 +59,7 @@ function onCustomRequest (file: File) {
     setTimeout(() => { // 模拟接口调用返回name和url
       const res = {
         name: '1.jpg',
-        url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg'
+        url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg'
       }
       if (res) {
         resolve(res)
@@ -111,7 +114,7 @@ import { ref } from 'vue'
 const imageList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   }
 ])
 </script>
@@ -138,11 +141,11 @@ import { ref, watchEffect } from 'vue'
 const fileList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   },
   {
     name: 'Markdown.pdf',
-    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Markdown.pdf'
+    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Markdown.pdf'
   }
 ])
 watchEffect(() => {
@@ -158,11 +161,11 @@ watchEffect(() => {
 
 ## 自定义样式
 
-*缩略图等比覆盖，上传描述文字使用：上传*
+*缩略图等比覆盖；上传描述文字使用：上传；间距设为16px*
 
 <br/>
 
-<Upload :max-count="3" tip="上传" fit="cover" v-model:file-list="fileList" />
+<Upload :max-count="3" tip="上传" fit="cover" :gap="16" v-model:file-list="fileList" />
 
 ::: details Show Code
 
@@ -172,11 +175,11 @@ import { ref, watchEffect } from 'vue'
 const fileList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   },
   {
     name: 'Markdown.pdf',
-    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Markdown.pdf'
+    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Markdown.pdf'
   }
 ])
 watchEffect(() => {
@@ -184,7 +187,7 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <Upload :max-count="3" tip="上传" fit="cover" v-model:file-list="fileList" />
+  <Upload :max-count="3" tip="上传" fit="cover" :gap="16" v-model:file-list="fileList" />
 </template>
 ```
 
@@ -213,7 +216,7 @@ import { ref } from 'vue'
 const imageList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   }
 ])
 const errorInfo = ref('') // 上传错误提示信息
@@ -274,11 +277,11 @@ import { ref } from 'vue'
 const fileList = ref([
   {
     name: '1.jpg',
-    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg"
+    url: "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg"
   },
   {
     name: 'Markdown.pdf',
-    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Markdown.pdf'
+    url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Markdown.pdf'
   }
 ])
 const errorInfo = ref('') // 上传错误提示信息
@@ -302,7 +305,7 @@ function onCustomRequest (file: File) {
     setTimeout(() => { // 模拟接口调用返回name和url
       const res = {
         name: '1.jpg',
-        url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/1.jpg'
+        url: 'https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/1.jpg'
       }
       if (res) {
         resolve(res)
@@ -339,18 +342,19 @@ function onRemove (file: object) {
 
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
-accept | 接受上传的文件类型，与\<input type="file">的accept属性一致，详见 [input accept Attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/input/file) | string | '*' | false
+accept | 接受上传的文件类型，与`<input type="file" />`的 `accept` 属性一致，详见 [input accept Attribute](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/input/file) | string | '*' | false
 multiple | 是否支持多选文件 | boolean | false | false
-maxCount | 限制上传数量。当为 1 时，始终用最新上传的文件代替当前文件 | number | 1 | false
+maxCount | 限制上传数量。当为 `1` 时，始终用最新上传的文件代替当前文件 | number | 1 | false
 tip | 上传描述文字 | string | 'Upload' | false
 uploadingTip | 上传中的文字描述 | string | 'Uploading' | false
+gap | 展示文件间距大小，数组时表示: `[水平间距, 垂直间距]` | number &#124; number[] | 8 | false
 fit | 预览图片缩放规则，仅当上传文件为图片时生效 | 'fill' &#124; 'contain' &#124; 'cover' | 'contain' | false
 errorInfo | 上传中断时的错误提示信息 | string | '' | false
-beforeUpload | 上传文件之前的钩子，参数为上传的文件，返回 false 则停止上传，返回 true 继续上传，通常用来现在用户上传的文件格式和大小 | Function | () => true | false
-uploadMode | 上传文件的方式，默认是 base64，可选 'base64' &#124; 'custom' | 'base64' &#124; 'custom' | 'base64' | false
-customRequest | 自定义上传行为，只有 uploadMode: custom 时，才会使用 customRequest 自定义上传行为 | Function | () => {} | false
+beforeUpload | 上传文件之前的钩子，参数为上传的文件，返回 `false` 则停止上传，返回 `true` 继续上传，通常用来现在用户上传的文件格式和大小 | Function | () => true | false
+uploadMode | 上传文件的方式，可选 `'base64'` &#124; `'custom'` | 'base64' &#124; 'custom' | 'base64' | false
+customRequest | 自定义上传行为，只有 `uploadMode: custom` 时，才会使用 `customRequest` 自定义上传行为 | Function | () => {} | false
 disabled | 是否禁用，只能预览，不能删除和上传 | boolean | false | false
-fileList(v-model) | 已上传的文件列表 | FileType[] | [] | false
+fileList <Tag color="cyan">v-model</Tag> | 已上传的文件列表 | FileType[] | [] | false
 
 ## FileType Type
 

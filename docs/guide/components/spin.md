@@ -1,5 +1,8 @@
 # 加载中 Spin
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *用于页面和区块的加载中状态*
@@ -31,7 +34,6 @@ const spinning = ref(true)
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const spinning = ref(true)
 </script>
 <template>
@@ -41,10 +43,11 @@ const spinning = ref(true)
   <br/>
   <h4>Loading state: <Switch v-model:checked="spinning" /></h4>
 </template>
-<style>
+<style lang="less" scoped>
 .spin-content {
   display: inline-block;
   border: 1px solid #91d5ff;
+  border-radius: 6px;
   background-color: #e6f7ff;
   padding: 16px;
 }
@@ -53,10 +56,10 @@ const spinning = ref(true)
 
 :::
 
-## 静态圆形指示符
+## 四分之一圆形指示符
 
 <br/>
-<Spin :spinning="spinning" indicator="static-circle" />
+<Spin :spinning="spinning" indicator="quarter-circle" />
 <br/>
 
 ::: details Show Code
@@ -64,11 +67,30 @@ const spinning = ref(true)
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const spinning = ref(true)
 </script>
 <template>
-  <Spin :spinning="spinning" indicator="static-circle" />
+  <Spin :spinning="spinning" indicator="quarter-circle" />
+</template>
+```
+
+:::
+
+## 四分之三圆形指示符
+
+<br/>
+<Spin :spinning="spinning" indicator="three-quarters-circle" />
+<br/>
+
+::: details Show Code
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+const spinning = ref(true)
+</script>
+<template>
+  <Spin :spinning="spinning" indicator="three-quarters-circle" />
 </template>
 ```
 
@@ -85,7 +107,6 @@ const spinning = ref(true)
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const spinning = ref(true)
 </script>
 <template>
@@ -106,7 +127,6 @@ const spinning = ref(true)
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const spinning = ref(true)
 </script>
 <template>
@@ -116,28 +136,31 @@ const spinning = ref(true)
 
 :::
 
-## 自定义主题色
+## 自定义颜色
 
-<br/>
-<Spin class="u-spin" color="#fadb14" :spinning="spinning" />
-<Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="static-circle" />
-<Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="dynamic-circle" />
-<br/>
+<Space>
+  <Spin class="u-spin" color="#fadb14" :spinning="spinning" />
+  <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="quarter-circle" />
+  <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="three-quarters-circle" />
+  <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="dynamic-circle" />
+</Space>
 
 ::: details Show Code
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const spinning = ref(true)
 </script>
 <template>
-  <Spin class="u-spin" color="#fadb14" :spinning="spinning" />
-  <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="static-circle" />
-  <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="dynamic-circle" />
+  <Space>
+    <Spin class="u-spin" color="#fadb14" :spinning="spinning" />
+    <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="quarter-circle" />
+    <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="three-quarters-circle" />
+    <Spin class="u-spin" color="#fadb14" :spinning="spinning" indicator="dynamic-circle" />
+  </Space>
 </template>
-<style>
+<style lang="less" scoped>
 .u-spin {
   display: inline-block;
   width: 100px !important;
@@ -150,38 +173,61 @@ const spinning = ref(true)
 
 ## 各种大小
 
-<Spin class="u-spin" :spinning="spinning" size="small" />
-<Spin class="u-spin" :spinning="spinning" />
-<Spin class="u-spin" :spinning="spinning" size="large" />
-<br/>
-<Spin class="u-spin" :spinning="spinning" size="small" indicator="static-circle" />
-<Spin class="u-spin" :spinning="spinning" indicator="static-circle" />
-<Spin class="u-spin" :spinning="spinning" size="large"  indicator="static-circle" />
-<br/>
-<Spin class="u-spin" :spinning="spinning" size="small" indicator="dynamic-circle" />
-<Spin class="u-spin" :spinning="spinning" indicator="dynamic-circle" />
-<Spin class="u-spin" :spinning="spinning" size="large"  indicator="dynamic-circle" />
+<Space direction="vertical">
+  <Space>
+    <Spin class="u-spin" :spinning="spinning" size="small" />
+    <Spin class="u-spin" :spinning="spinning" />
+    <Spin class="u-spin" :spinning="spinning" size="large" />
+  </Space>
+  <Space>
+    <Spin class="u-spin" :spinning="spinning" size="small" indicator="quarter-circle" />
+    <Spin class="u-spin" :spinning="spinning" indicator="quarter-circle" />
+    <Spin class="u-spin" :spinning="spinning" size="large"  indicator="quarter-circle" />
+  </Space>
+  <Space>
+    <Spin class="u-spin" :spinning="spinning" size="small" indicator="three-quarters-circle" />
+    <Spin class="u-spin" :spinning="spinning" indicator="three-quarters-circle" />
+    <Spin class="u-spin" :spinning="spinning" size="large"  indicator="three-quarters-circle" />
+  </Space>
+  <Space>
+    <Spin class="u-spin" :spinning="spinning" size="small" indicator="dynamic-circle" />
+    <Spin class="u-spin" :spinning="spinning" indicator="dynamic-circle" />
+    <Spin class="u-spin" :spinning="spinning" size="large"  indicator="dynamic-circle" />
+  </Space>
+</Space>
 
 ::: details Show Code
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const spinning = ref(true)
 </script>
 <template>
-  <Spin class="u-spin" :spinning="spinning" size="small" />
-  <Spin class="u-spin" :spinning="spinning" />
-  <Spin class="u-spin" :spinning="spinning" size="large" />
-  <Spin class="u-spin" :spinning="spinning" size="small" indicator="static-circle" />
-  <Spin class="u-spin" :spinning="spinning" indicator="static-circle" />
-  <Spin class="u-spin" :spinning="spinning" size="large"  indicator="static-circle" />
-  <Spin class="u-spin" :spinning="spinning" size="small" indicator="dynamic-circle" />
-  <Spin class="u-spin" :spinning="spinning" indicator="dynamic-circle" />
-  <Spin class="u-spin" :spinning="spinning" size="large"  indicator="dynamic-circle" />
+  <Space direction="vertical">
+    <Space>
+      <Spin class="u-spin" :spinning="spinning" size="small" />
+      <Spin class="u-spin" :spinning="spinning" />
+      <Spin class="u-spin" :spinning="spinning" size="large" />
+    </Space>
+    <Space>
+      <Spin class="u-spin" :spinning="spinning" size="small" indicator="quarter-circle" />
+      <Spin class="u-spin" :spinning="spinning" indicator="quarter-circle" />
+      <Spin class="u-spin" :spinning="spinning" size="large"  indicator="quarter-circle" />
+    </Space>
+    <Space>
+      <Spin class="u-spin" :spinning="spinning" size="small" indicator="three-quarters-circle" />
+      <Spin class="u-spin" :spinning="spinning" indicator="three-quarters-circle" />
+      <Spin class="u-spin" :spinning="spinning" size="large"  indicator="three-quarters-circle" />
+    </Space>
+    <Space>
+      <Spin class="u-spin" :spinning="spinning" size="small" indicator="dynamic-circle" />
+      <Spin class="u-spin" :spinning="spinning" indicator="dynamic-circle" />
+      <Spin class="u-spin" :spinning="spinning" size="large"  indicator="dynamic-circle" />
+    </Space>
+  </Space>
 </template>
-<style>
+<style lang="less" scoped>
 .u-spin {
   display: inline-block;
   width: 100px !important;
@@ -192,7 +238,7 @@ const spinning = ref(true)
 
 :::
 
-<style>
+<style lang="less" scoped>
 .m-flex {
   display: flex;
   gap: 12px;
@@ -203,6 +249,7 @@ const spinning = ref(true)
 }
 .spin-content {
   display: inline-block;
+  border-radius: 6px;
   border: 1px solid #91d5ff;
   background-color: #e6f7ff;
   padding: 16px;
@@ -221,4 +268,5 @@ const spinning = ref(true)
 spinning | 是否为加载中状态 | boolean | true | false
 size | 组件大小 | 'small' &#124; 'default' &#124; 'large' | 'default' | false
 tip | 描述文案 | string | '' | false
-indicator | 加载指示符 | 'dot' &#124; 'static-circle' &#124; 'dynamic-circle' | 'dot' | false
+indicator | 加载指示符 | 'dot' &#124; 'quarter-circle' &#124; 'three-quarters-circle' &#124; 'dynamic-circle' | 'dot' | false
+color | 主题颜色 | string | '#1677FF' | false

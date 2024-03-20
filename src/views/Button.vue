@@ -7,79 +7,53 @@ function onClick (e: Event) {
 </script>
 <template>
   <div>
-    <h2 class="mb10">Button 按钮基本使用</h2>
-    <Button
-      class="mr30"
-      :loading="loading"
-      @click="onClick">
-      Default Button
-    </Button>
-    <Button
-      class="mr30"
-      effect="reverse"
-      :loading="loading"
-      @click="onClick">
-      Reverse Button
-    </Button>
-    <Button
-      class="mr30"
-      type="primary"
-      :loading="loading"
-      @click="onClick">
-      Primary Button
-    </Button>
-    <Button
-      class="mr30"
-      type="danger"
-      :loading="loading"
-      @click="onClick">
-      Danger Button
-    </Button>
-    <Button
-      class="mr30"
-      disabled
-      :loading="loading"
-      @click="onClick">
-      Disabled Button
-    </Button>
-    <h2 class="mt30 mb10">大(large)、中(default)、小(small)三种尺寸</h2>
-    <Button
-      class="mr30"
-      size="large"
-      :loading="loading"
-      @click="onClick">
-      Default Button
-    </Button>
-    <Button
-      class="mr30"
-      :loading="loading"
-      @click="onClick">
-      Default Button
-    </Button>
-    <Button
-      size="small"
-      :loading="loading"
-      @click="onClick">
-      Default Button
-    </Button>
-    <h2 class="mt30 mb10">自定义按钮宽高 (width: 150 & height: 40)</h2>
-    <Button
-      class="mr30"
-      :width="150"
-      :height="40"
-      :loading="loading"
-      @click="onClick">
-      Default Button
+    <h1>Button 按钮</h1>
+    <h2 class="mt30 mb10">七种类型</h2>
+    <Space>
+      <Button>Default Button</Button>
+      <Button effect="reverse">Reverse Button</Button>
+      <Button type="primary">Primary Button</Button>
+      <Button type="danger">Danger Button</Button>
+      <Button type="dashed">Dashed Button</Button>
+      <Button type="text">Text Button</Button>
+      <Button type="link">Link Button</Button>
+    </Space>
+    <h2 class="mt30 mb10">禁用</h2>
+    <Space>
+      <Button disabled>Default Button</Button>
+      <Button disabled effect="reverse">Reverse Button</Button>
+      <Button disabled type="primary">Primary Button</Button>
+      <Button disabled type="danger">Danger Button</Button>
+      <Button disabled type="dashed">Dashed Button</Button>
+      <Button disabled type="text">Text Button</Button>
+      <Button disabled type="link">Link Button</Button>
+    </Space>
+    <h2 class="mt30 mb10">三种尺寸</h2>
+    <Space>
+      <Button size="small">Small</Button>
+      <Button>Default</Button>
+      <Button size="large">Large</Button>
+    </Space>
+    <h2 class="mt30 mb10">自定义样式</h2>
+    <Button style="width: 140px; height: 40px;" size="large">
+      <p style="font-size: 18px;">自定义样式</p>
     </Button>
     <h2 class="mt30 mb10">加载中状态</h2>
-    <Button
-      class="mr30"
-      loading
-      @click="onClick">
-      Default Button
-    </Button>
-    <h3 class="mt30">Loading state: <Switch v-model:checked="loading" /></h3>
-    <h2 class="mt30 mb10">Ant Design Vue 按钮</h2>
-    <a-button type="default" :loading="loading" @click="onClick">按钮Button</a-button>
+    <Space>
+      <Button :loading="loading">Default Button</Button>
+      <Button effect="reverse" :loading="loading">Reverse Button</Button>
+      <Button type="primary" :loading="loading">Primary Button</Button>
+      <Button type="danger" :loading="loading">Danger Button</Button>
+      <Button type="dashed" :loading="loading">Dashed Button</Button>
+      <Button type="text" :loading="loading">Text Button</Button>
+      <Button type="link" :loading="loading">Link Button</Button>
+    </Space>
+    <br/>
+    <Space align="center" style="margin-top: 10px;">
+      <h3 style="margin-top: 0;">Loading state: </h3>
+      <Switch v-model:checked="loading" />
+    </Space>
+    <h2 class="mt30 mb10">居中展示</h2>
+    <Button center @click="onClick">Default Button</Button>
   </div>
 </template>

@@ -7,7 +7,7 @@ set -e
 version=`jq -r .version package.json`
 
  # 打包构建
-yarn build
+pnpm build
 
  # 提交代码到github
 git add .
@@ -15,10 +15,10 @@ git commit -m "update $version"
 git push
 
  # 发布到npm，pnpm(高性能的npm)
-npm publish
+pnpm publish
 
 # 升级 vit-space-ui 依赖版本
-npm up vit-space-ui@$version
+pnpm up vit-space-ui@$version
 
 # 提交版本更新代码到github
 git add .

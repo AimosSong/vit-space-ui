@@ -1,34 +1,34 @@
-# 下载文件
+# 下载文件<BackTop />
 
 ::: details Show Source Code
 
 ```ts
 function downloadFile(url: string, name: string) {
-  var fileName = "";
-  if (name) {
-    fileName = name;
-  } else {
-    const res = url.split("?")[0].split("/");
-    fileName = res[res.length - 1];
-  }
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", url, true);
-  xhr.responseType = "blob";
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      const blob = xhr.response;
-      const link = document.createElement("a");
-      const body = document.querySelector("body");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = fileName;
-      link.style.display = "none";
-      body?.appendChild(link);
-      link.click();
-      body?.removeChild(link);
-      window.URL.revokeObjectURL(link.href);
+    var fileName = "";
+    if (name) {
+        fileName = name;
+    } else {
+        const res = url.split("?")[0].split("/");
+        fileName = res[res.length - 1];
     }
-  };
-  xhr.send();
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = "blob";
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const blob = xhr.response;
+            const link = document.createElement("a");
+            const body = document.querySelector("body");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.style.display = "none";
+            body?.appendChild(link);
+            link.click();
+            body?.removeChild(link);
+            window.URL.revokeObjectURL(link.href);
+        }
+    };
+    xhr.send();
 }
 ```
 
@@ -36,7 +36,7 @@ function downloadFile(url: string, name: string) {
 
 ## 何时使用
 
-- 下载文件并自定义文件名时
+-   下载文件并自定义文件名时
 
 ## 基本使用
 
@@ -45,8 +45,8 @@ function downloadFile(url: string, name: string) {
 import { downloadFile } from "vit-space-ui";
 
 donwloadFile(
-  "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Markdown.pdf",
-  "Markdown"
+    "https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Markdown.pdf",
+    "Markdown"
 );
 </script>
 ```

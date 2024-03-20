@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
-interface Props { // 基于类型的声明
+interface Props {
   current?: number // 当前页数
   pageSize?: number // 每页条数
   total?: number // 数据总数
   pageListNum?: number // 显示的页码数组长度
-  hideOnSinglePage?: boolean // 只有一页时是否隐藏分页器
+  hideOnSinglePage?: boolean // 只有一页时是否隐藏分页
   showQuickJumper?: boolean // 是否可以快速跳转至某页
   showTotal?: boolean // 是否显示当前页数和数据总量
-  placement?: 'left'|'center'|'right' // 分页器展示位置，靠左left，居中center，靠右right
+  placement?: 'left'|'center'|'right' // 分页展示位置，靠左left，居中center，靠右right
 }
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), { // 基于类型的声明
   current: 1,
   pageSize: 10,
   total: 0,
@@ -134,8 +134,8 @@ function changePage (pageNum: number): boolean | void {
         @click="onForward"
         @mouseenter="forwardArrow = true"
         @mouseleave="forwardArrow = false">
-        <span v-show="!forwardArrow" class="u-ellipsis">•••</span>
-        <svg v-show="forwardArrow" class="u-icon" viewBox="64 64 896 896" data-icon="double-left" aria-hidden="true" focusable="false"><path d="M272.9 512l265.4-339.1c4.1-5.2.4-12.9-6.3-12.9h-77.3c-4.9 0-9.6 2.3-12.6 6.1L186.8 492.3a31.99 31.99 0 0 0 0 39.5l255.3 326.1c3 3.9 7.7 6.1 12.6 6.1H532c6.7 0 10.4-7.7 6.3-12.9L272.9 512zm304 0l265.4-339.1c4.1-5.2.4-12.9-6.3-12.9h-77.3c-4.9 0-9.6 2.3-12.6 6.1L490.8 492.3a31.99 31.99 0 0 0 0 39.5l255.3 326.1c3 3.9 7.7 6.1 12.6 6.1H836c6.7 0 10.4-7.7 6.3-12.9L576.9 512z"></path></svg>
+        <span class="u-ellipsis">•••</span>
+        <svg class="u-icon" viewBox="64 64 896 896" data-icon="double-left" aria-hidden="true" focusable="false"><path d="M272.9 512l265.4-339.1c4.1-5.2.4-12.9-6.3-12.9h-77.3c-4.9 0-9.6 2.3-12.6 6.1L186.8 492.3a31.99 31.99 0 0 0 0 39.5l255.3 326.1c3 3.9 7.7 6.1 12.6 6.1H532c6.7 0 10.4-7.7 6.3-12.9L272.9 512zm304 0l265.4-339.1c4.1-5.2.4-12.9-6.3-12.9h-77.3c-4.9 0-9.6 2.3-12.6 6.1L490.8 492.3a31.99 31.99 0 0 0 0 39.5l255.3 326.1c3 3.9 7.7 6.1 12.6 6.1H836c6.7 0 10.4-7.7 6.3-12.9L576.9 512z"></path></svg>
       </span>
       <span :class="['u-item', { active: currentPage === page }]" v-for="(page, index) in pageList" :key="index" @click="changePage(page)">{{ page }}</span>
       <span
@@ -145,8 +145,8 @@ function changePage (pageNum: number): boolean | void {
         @click="onBackward"
         @mouseenter="backwardArrow = true"
         @mouseleave="backwardArrow = false">
-        <span v-show="!backwardArrow" class="u-ellipsis">•••</span>
-        <svg v-show="backwardArrow" class="u-icon" viewBox="64 64 896 896" data-icon="double-right" aria-hidden="true" focusable="false"><path d="M533.2 492.3L277.9 166.1c-3-3.9-7.7-6.1-12.6-6.1H188c-6.7 0-10.4 7.7-6.3 12.9L447.1 512 181.7 851.1A7.98 7.98 0 0 0 188 864h77.3c4.9 0 9.6-2.3 12.6-6.1l255.3-326.1c9.1-11.7 9.1-27.9 0-39.5zm304 0L581.9 166.1c-3-3.9-7.7-6.1-12.6-6.1H492c-6.7 0-10.4 7.7-6.3 12.9L751.1 512 485.7 851.1A7.98 7.98 0 0 0 492 864h77.3c4.9 0 9.6-2.3 12.6-6.1l255.3-326.1c9.1-11.7 9.1-27.9 0-39.5z"></path></svg>
+        <span class="u-ellipsis">•••</span>
+        <svg class="u-icon" viewBox="64 64 896 896" data-icon="double-right" aria-hidden="true" focusable="false"><path d="M533.2 492.3L277.9 166.1c-3-3.9-7.7-6.1-12.6-6.1H188c-6.7 0-10.4 7.7-6.3 12.9L447.1 512 181.7 851.1A7.98 7.98 0 0 0 188 864h77.3c4.9 0 9.6-2.3 12.6-6.1l255.3-326.1c9.1-11.7 9.1-27.9 0-39.5zm304 0L581.9 166.1c-3-3.9-7.7-6.1-12.6-6.1H492c-6.7 0-10.4 7.7-6.3 12.9L751.1 512 485.7 851.1A7.98 7.98 0 0 0 492 864h77.3c4.9 0 9.6-2.3 12.6-6.1l255.3-326.1c9.1-11.7 9.1-27.9 0-39.5z"></path></svg>
       </span>
       <span v-show="totalPage!==1" :class="['u-item', { active: currentPage === totalPage }]" @click="changePage(totalPage)">{{ totalPage }}</span>
       <span class="u-item" :class="{ disabled: currentPage === totalPage }" @click="changePage(currentPage + 1)">
@@ -180,7 +180,7 @@ function changePage (pageNum: number): boolean | void {
     height: 32px;
     line-height: 30px;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.88);
+    color: rgba(0, 0, 0, .88);
     text-align: center;
     .mr8 {
       margin-right: 8px;
@@ -192,6 +192,7 @@ function changePage (pageNum: number): boolean | void {
       user-select: none; // 禁止选取文本
       border: 1px solid #d9d9d9;
       border-radius: 6px;
+      background: #FFF;
       cursor: pointer;
       transition: all .3s;
       &:hover {
@@ -199,7 +200,7 @@ function changePage (pageNum: number): boolean | void {
       }
       .u-arrow {
         display: inline-block;
-        fill: rgba(0, 0, 0, 0.65);
+        fill: rgba(0, 0, 0, .65);
         width: 12px;
         height: 12px;
         transition: all .3s;
@@ -218,42 +219,70 @@ function changePage (pageNum: number): boolean | void {
     }
     .disabled {
       // pointer-events: none; // 禁用鼠标事件
-      color: rgba(0, 0, 0, 0.25);
+      color: rgba(0, 0, 0, .25);
       background: #fff;
       border-color: #d9d9d9;
       cursor: not-allowed;
       &:hover {
         font-weight: 400;
-        color: rgba(0, 0, 0, 0.65);
+        color: rgba(0, 0, 0, .65);
         border-color: #d9d9d9;
         .u-arrow {
-          fill: rgba(0, 0, 0, 0.25);
+          fill: rgba(0, 0, 0, .25);
         }
       }
       .u-arrow {
-        fill: rgba(0, 0, 0, 0.25);
+        fill: rgba(0, 0, 0, .25);
       }
     }
     .m-arrow {
+      position: relative;
       display: inline-block;
-      vertical-align: middle;
+      vertical-align: top;
       margin-right: 8px;
-      min-width: 32px;
+      width: 32px;
       height: 32px;
-      letter-spacing: 2px;
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.25);
       transition: all .3s;
       cursor: pointer;
+      &:hover {
+        .u-ellipsis {
+          opacity: 0;
+          pointer-events: none;
+        }
+        .u-icon {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
       .u-ellipsis {
-        transition: all .3s;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        inset-inline-end: 0;
+        bottom: 0;
+        inset-inline-start: 0;
+        display: block;
+        margin: auto;
+        color: rgba(0, 0, 0, .25);
+        font-family: Arial,Helvetica,sans-serif;
+        line-height: 32px;
+        letter-spacing: 2px;
+        text-align: center;
+        text-indent: .13em;
+        opacity: 1;
+        transition: all .2s;
       }
       .u-icon {
-        display: inline-block;
-        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        vertical-align: -0.125em;
         fill: @themeColor;
         width: 12px;
         height: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all .2s;
       }
     }
     .u-jump-page {
@@ -268,10 +297,10 @@ function changePage (pageNum: number): boolean | void {
         margin: 0 8px;
         border: 1px solid #d9d9d9;
         border-radius: 6px;
-        background: transparent;
+        background: #FFF;
         text-align: left;
         outline: none;
-        transition: all 0.3s;
+        transition: all .3s;
         &:hover {
           border-color: @themeColor
         }

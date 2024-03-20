@@ -42,14 +42,16 @@ function onNext () {
 </script>
 <template>
   <div>
-    <h2 class="mb10">Steps 步骤条基本使用</h2>
+    <h1>Steps 步骤条</h1>
+    <h2 class="mt30 mb10">基本使用</h2>
     <Steps
       :steps="steps"
       :width="'100%'"
       :descMaxWidth="160"
       :current="current"
       @change="onChange" />
-    <h2 class="mt30 mb10">步骤条设置 v-model: current 后可点击</h2>
+    <h2 class="mt30 mb10">可点击</h2>
+    <h3 class="mb10">设置 v-model: current 后即可点击</h3>
     <Steps
       :steps="steps"
       :width="'100%'"

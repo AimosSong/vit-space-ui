@@ -1,5 +1,8 @@
 # 播放器 Video
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *简易封装的播放器*
@@ -10,8 +13,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Bao.mp4')
-const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/bao.jpg')
+const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Bao.mp4')
+const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/bao.jpg')
 </script>
 
 ## 基本使用
@@ -27,8 +30,8 @@ const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/b
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Bao.mp4')
-const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/bao.jpg')
+const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Bao.mp4')
+const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/bao.jpg')
 </script>
 <template>
   <Video
@@ -67,8 +70,8 @@ const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/b
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Bao.mp4')
-const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/bao.jpg')
+const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Bao.mp4')
+const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/bao.jpg')
 </script>
 <template>
   <Video
@@ -99,7 +102,7 @@ const poster = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/b
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Bao.mp4')
+const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/Bao.mp4')
 </script>
 <template>
   <Video
@@ -116,28 +119,28 @@ const src = ref('https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.3/Bao.
 
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
-src | 视频文件地址，支持网络地址 https 和相对地址 | string | '' | true
-poster | 视频封面地址，支持网络地址 https 和相对地址 | string | '' | false
-second | 在未设置封面时，自动截取视频第 second 秒对应帧作为视频封面 | number | 0.5 | false
-width | 视频播放器宽度，单位px | number | 800 | false
-height | 视频播放器高度，单位px | number | 450 | false
-autoplay | 视频就绪后是否马上播放，优先级高于preload，参考 [MDN 自动播放指南](https://developer.mozilla.org/zh-CN/docs/Web/Media/Autoplay_guide) | boolean | false | false
+src | 视频文件地址，支持网络地址 `https` 和相对地址 | string | '' | true
+poster | 视频封面地址，支持网络地址 `https` 和相对地址 | string | '' | false
+second | 在未设置封面时，自动截取视频第 `second` 秒对应帧作为视频封面 | number | 0.5 | false
+width | 视频播放器宽度，单位`px` | number | 800 | false
+height | 视频播放器高度，单位`px` | number | 450 | false
+autoplay | 视频就绪后是否马上播放，优先级高于 `preload`，参考 [MDN 自动播放指南](https://developer.mozilla.org/zh-CN/docs/Web/Media/Autoplay_guide) | boolean | false | false
 controls | 是否向用户显示控件，比如进度条，全屏等 | boolean | true | false
 loop | 视频播放完成后，是否循环播放 | boolean | false | false
 muted |  是否静音 | boolean | false | false
-preload | 是否在页面加载后载入视频，如果设置了autoplay属性，则preload将被忽略 | 'auto' &#124; 'metadata' &#124; 'none' | 'auto' | false
+preload | 是否在页面加载后载入视频，如果设置了 `autoplay` 属性，则 `preload` 将被忽略 | 'auto' &#124; 'metadata' &#124; 'none' | 'metadata' | false
 showPlay | 播放暂停时是否显示播放器中间的暂停图标 | boolean | true | false
-fit | video的poster默认图片和视频内容缩放规则 | 'none' &#124; 'fill' &#124; 'contain' &#124; 'cover' | 'contain' | false
+fit | `video` 的 `poster` 默认图片和视频内容缩放规则 | 'none' &#124; 'fill' &#124; 'contain' &#124; 'cover' | 'contain' | false
 
 *preload可选属性：*
 
-- auto: 一旦页面加载，则开始加载视频;
-- metadata: 当页面加载后仅加载视频的元数据（例如长度），建议使用- - metadata，以便视频自动获取第一帧作为封面poster
-- none: 页面加载后不应加载视频
+- `auto`: 一旦页面加载，则开始加载视频;
+- `metadata`: 当页面加载后仅加载视频的元数据（例如长度），建议使用- - `metadata`，以便视频自动获取第一帧作为封面 `poster`
+- `none`: 页面加载后不应加载视频
 
 *fit可选属性：*
 
-- none: 保存原有内容，不进行缩放;
-- fill: 不保持原有比例，内容拉伸填充整个内容容器;
-- contain: 保存原有比例，内容以包含方式缩放;
-- cover: 保存原有比例，内容以覆盖方式缩放
+- `none`: 保存原有内容，不进行缩放;
+- `fill`: 不保持原有比例，内容拉伸填充整个内容容器;
+- `contain`: 保存原有比例，内容以包含方式缩放;
+- `cover`: 保存原有比例，内容以覆盖方式缩放

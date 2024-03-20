@@ -1,5 +1,8 @@
 # 面包屑 Breadcrumb
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *显示当前页面在系统层级结构中的位置，并能向上返回*
@@ -92,7 +95,7 @@ const routes = [
 
 ## 自定义样式
 
-<Breadcrumb :routes="routes" :font-size="16" />
+<Breadcrumb :routes="routes" :font-size="16" :height="32" />
 
 ::: details Show Code
 
@@ -115,7 +118,7 @@ const routes = [
   ]
 </script>
 <template>
-  <Breadcrumb :routes="routes" :font-size="16" />
+  <Breadcrumb :routes="routes" :font-size="16" :height="32" />
 </template>
 ```
 
@@ -157,10 +160,10 @@ const routes = [
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
 routes | 路由数组 | Route[] | [] | true
-fontSize | 字体大小，单位px | number | 14 | false
+fontSize | 字体大小，单位`px` | number | 14 | false
 height | 面包屑高度 | number | 36 | false
-maxWidth | 文本最大显示宽度，超出后显示省略号，单位px | 180 | false
-separator | 分隔符，默认''时为箭头 | string | '' | false
+maxWidth | 文本最大显示宽度，超出后显示省略号，单位`px` | number | 180 | false
+separator | 分隔符，默认 '' 时为箭头 | string | '' | false
 target | 如何打开目标URL | '_self' &#124; '_blank' | '_self' | false
 
 ## Route Type

@@ -11,6 +11,8 @@ interface Props {
   vertical?: boolean // 是否垂直排列
   value?: any[] // 当前选中的值（v-model）
   gap?: number // 多个单选框之间的间距，单位px，垂直排列时，间距即垂直间距
+  width?: string|number, // 复选区域最大展示宽度，超出后折行
+  height?: string|number, // 复选区域最大展示高度，超出后滚动
   indeterminate?: boolean // 全选时的样式控制
   checked?: boolean // 是否全选（v-model）
 }
@@ -20,19 +22,28 @@ const props = withDefaults(defineProps<Props>(), {
   vertical: false,
   value: () => [],
   gap: 8,
+  width: 'auto',
+  height: 'auto',
   indeterminate: false,
   checked: false
 })
 const sum = computed(() => { // 选项总数
   return props.options.length
 })
-const checkedValue = ref(props.value)
-watch(
-  () => props.value,
-  (to) => {
-    checkedValue.value = to
+const maxWidth = computed(() => { // 选项总数
+  if (typeof props.width === 'number') {
+    return props.width + 'px'
+  } else {
+    return props.width
   }
-)
+})
+const maxHeight = computed(() => { // 选项总数
+  if (typeof props.height === 'number') {
+    return props.height + 'px'
+  } else {
+    return props.height
+  }
+})
 const styleObject = computed(() => {
   if (props.vertical) {
     return {
@@ -44,6 +55,13 @@ const styleObject = computed(() => {
     }
   }
 })
+const checkedValue = ref(props.value)
+watch(
+  () => props.value,
+  (to) => {
+    checkedValue.value = to
+  }
+)
 const emits = defineEmits(['update:value', 'update:checked', 'change'])
 function onClick (value: any) {
   if (props.value.includes(value)) { // 已选中
@@ -61,7 +79,7 @@ function onCheckAll () { // 全选切换
 }
 </script>
 <template>
-  <div class="m-checkbox">
+  <div class="m-checkbox" :style="`max-width: ${maxWidth}; max-height: ${maxHeight};`">
     <template v-if="sum">
       <div
         class="m-checkbox-wrap"
@@ -89,9 +107,10 @@ function onCheckAll () { // 全选切换
 <style lang="less" scoped>
 .m-checkbox {
   display: inline-block;
-  color: rgba(0, 0, 0, 0.88);
+  color: rgba(0, 0, 0, .88);
   font-size: 14px;
   line-height: 1;
+  overflow: auto;
   .m-checkbox-wrap {
     display: inline-block;
     .m-box {
@@ -114,41 +133,38 @@ function onCheckAll () { // 全选切换
         margin-top: 3px;
         width: 16px;
         height: 16px;
-        background: #fff;
+        background: transparent;
         border: 1px solid #d9d9d9;
         border-radius: 4px;
         transition: all .3s;
-        &:after {
+        &::after {
+          box-sizing: border-box;
           position: absolute;
           top: 50%;
-          left: 21.5%;
+          inset-inline-start: 21.5%;
+          display: table;
           width: 5.7142857142857135px;
           height: 9.142857142857142px;
           border: 2px solid #fff;
           border-top: 0;
-          border-left: 0;
-          transform: rotate(45deg) scale(0) translate(-50%, -50%);
+          border-inline-start: 0;
+          transform: rotate(45deg) scale(0) translate(-50%,-50%);
           opacity: 0;
-          transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s;
-          content: '';
+          content: "";
+          transition: all .1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity .1s;
         }
       }
       .u-checkbox-checked {
         background-color: @themeColor;
         border-color: @themeColor;
-        &:after {
-          position: absolute;
-          border: 2px solid #fff;
-          border-top: 0;
-          border-left: 0;
-          transform: rotate(45deg) scale(1) translate(-50%, -50%);
+        &::after {
           opacity: 1;
-          transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
-          content: '';
+          transform: rotate(45deg) scale(1) translate(-50%,-50%);
+          transition: all .2s cubic-bezier(0.12, 0.4, 0.29, 1.46) .1s;
         }
       }
       .indeterminate {
-        &:after {
+        &::after {
           top: 50%;
           left: 50%;
           width: 8px;
@@ -167,7 +183,7 @@ function onCheckAll () { // 全选切换
       }
     }
     .disabled {
-      color: rgba(0, 0, 0, 0.25);
+      color: rgba(0, 0, 0, .25);
       cursor: not-allowed;
       &:hover {
         .u-checkbox {
@@ -176,9 +192,9 @@ function onCheckAll () { // 全选切换
       }
       .u-checkbox {
         border-color: #d9d9d9;
-        background-color: #f5f5f5;
-        &:after {
-          border-color: rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, .04);
+        &::after {
+          border-color: rgba(0, 0, 0, .25);
           animation-name: none;
         }
       }

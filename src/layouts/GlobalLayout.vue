@@ -1,186 +1,229 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-import { useDark, useToggle } from '@vueuse/core'
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { routes } from "@/router";
+import { toggleDark, BackTop } from "../../packages";
 
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
-const checked = ref(isDark)
-
-const route = useRoute() // 返回当前路由地址，相当于在模板中使用$route
+const route = useRoute(); // 返回当前路由地址，相当于在模板中使用$route
 // const router = useRouter() // 返回router实例，相当于在模板中使用$router
 
-const current = ref([route.name])
-function onClick (e: any):void {
-  console.log(e.key)
-  // console.log(e.keyPath)
+const showDuty = ref(false);
+const themeDark = ref();
+const observer = ref();
+
+onMounted(() => {
+    // 观察器的配置（需要观察什么变动）
+    const config = { attributes: true, childList: false, subtree: false };
+    // 创建一个观察器实例并传入回调函数
+    observer.value = new MutationObserver(callback);
+    // 以上述配置开始观察目标节点
+    observer.value.observe(document.documentElement, config);
+    themeDark.value = document.documentElement.classList.contains("dark");
+    if (!themeDark.value) {
+        // 默认开启暗黑模式
+        // toggleDark();
+    }
+});
+// 当观察到变动时执行的回调函数
+const callback = function () {
+    themeDark.value = document.documentElement.classList.contains("dark");
+};
+function onThemeChange() {
+    toggleDark();
 }
+// function toggleDark () {
+//   // 如果 dark 类值已存在，则移除它，否则添加它
+//   document.documentElement.classList.toggle('dark')
+// }
+const menus = ref(routes[0].children);
+const current = ref([route.name]);
+function onClick(e: any): void {
+    console.log(`${e.item.title} ${e.key}`);
+    // console.log(e.keyPath)
+}
+function onFinish() {
+    console.log("Off Duty！");
+}
+const getOffDate = (time = "9:00"): number => {
+    const date = new Date();
+    const Y = date.getFullYear();
+    const M = date.getMonth() + 1;
+    const D = date.getDate();
+    return new Date(`${Y} ${M} ${D} ${time}`).getTime() + 9 * 60 * 60 * 1000;
+};
+const countdown = computed(() => {
+    return getOffDate();
+});
+const routerViewRef = ref();
 </script>
 <template>
-  <a-row style="width: 100%;">
-    <a-col :xs="5" :xl="4">
-      <Switch
-        class="u-switch"
-        v-model:checked="checked"
-        @change="toggleDark"
-        checkedInfo="Dark"
-        uncheckedInfo="Light" />
-      <a-menu
-        class="m-menus"
-        v-model:selectedKeys="current"
-        mode="inline"
-        @click="onClick">
-        <a-menu-item key="Home">
-          <router-link to="/home">首页</router-link>
-        </a-menu-item>
-        <a-menu-item key="Breadcrumb">
-          <router-link to="/breadcrumb">面包屑（Breadcrumb）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Button">
-          <router-link to="/button">按钮（Button）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Carousel">
-          <router-link to="/carousel">走马灯（Carousel）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Cascader">
-          <router-link to="/cascader">级联选择（Cascader）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Checkbox">
-          <router-link to="/checkbox">多选框（Checkbox）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Collapse">
-          <router-link to="/collapse">折叠面板（Collapse）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Countdown">
-          <router-link to="/countdown">倒计时（Countdown）</router-link>
-        </a-menu-item>
-        <a-menu-item key="DatePicker">
-          <router-link to="/datepicker">日期选择（DatePicker）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Dialog">
-          <router-link to="/dialog">对话框（Dialog）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Divider">
-          <router-link to="/divider">分割线（Divider）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Empty">
-          <router-link to="/empty">空状态（Empty）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Image">
-          <router-link to="/image">图片（Image）</router-link>
-        </a-menu-item>
-        <a-menu-item key="InputNumber">
-          <router-link to="/inputnumber">数字输入框（InputNumber）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Message">
-          <router-link to="/message">全局提示（Message）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Modal">
-          <router-link to="/modal">信息提示（Modal）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Notification">
-          <router-link to="/notification">通知提醒框（Notification）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Pagination">
-          <router-link to="/pagination">分页器（Pagination）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Progress">
-          <router-link to="/progress">进度条（Progress）</router-link>
-        </a-menu-item>
-        <a-menu-item key="QRCode">
-          <router-link to="/qrcode">二维码（QRCode）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Radio">
-          <router-link to="/radio">单选框（Radio）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Rate">
-          <router-link to="/rate">评分（Rate）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Select">
-          <router-link to="/select">选择器（Select）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Slider">
-          <router-link to="/slider">滑动输入条（Slider）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Spin">
-          <router-link to="/spin">加载中（Spin）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Steps">
-          <router-link to="/steps">步骤条（Steps）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Swiper">
-          <router-link to="/swiper">触摸滑动插件（Swiper）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Switch">
-          <router-link to="/switch">开关（Switch）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Table">
-          <router-link to="/table">表格（Table）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Tabs">
-          <router-link to="/tabs">标签页（Tabs）</router-link>
-        </a-menu-item>
-        <a-menu-item key="TextScroll">
-          <router-link to="/textscroll">文字滚动（TextScroll）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Timeline">
-          <router-link to="/timeline">时间轴（Timeline）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Tooltip">
-          <router-link to="/tooltip">文字提示（Tooltip）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Upload">
-          <router-link to="/upload">上传（Upload）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Video">
-          <router-link to="/video">播放器（Video）</router-link>
-        </a-menu-item>
-        <a-menu-item key="Waterfall">
-          <router-link to="/waterfall">瀑布流（Waterfall）</router-link>
-        </a-menu-item>
-        <!--
-        <a-menu-item key="Drag">
-          <router-link to="/drag">拖拽组件</router-link>
-        </a-menu-item>
-        <a-menu-item key="Lazyload">
-          <router-link to="/lazyload">懒加载</router-link>
-        </a-menu-item> -->
-        <!--
-        <a-menu-item key="Ws">
-          <router-link to="/ws">WebSocket</router-link>
-        </a-menu-item> -->
-      </a-menu>
-    </a-col>
-    <a-col :xs="19" :xl="20">
-      <div class="router-view">
-        <RouterView v-slot="{ Component }">
-          <Transition name="fade" mode="out-in">
-            <component :is="Component" />
-          </Transition>
-        </RouterView>
-      </div>
-    </a-col>
-  </a-row>
+    <Switch
+        class="u-theme-switch"
+        v-model:checked="themeDark"
+        @change="onThemeChange"
+        :node-style="{ background: themeDark ? '#001529' : '#fff' }"
+    >
+        <template #node>
+            <svg
+                v-if="themeDark"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 0 24 24"
+                class="u-dark-svg"
+            >
+                <path
+                    d="M12.1,22c-0.3,0-0.6,0-0.9,0c-5.5-0.5-9.5-5.4-9-10.9c0.4-4.8,4.2-8.6,9-9c0.4,0,0.8,0.2,1,0.5c0.2,0.3,0.2,0.8-0.1,1.1c-2,2.7-1.4,6.4,1.3,8.4c2.1,1.6,5,1.6,7.1,0c0.3-0.2,0.7-0.3,1.1-0.1c0.3,0.2,0.5,0.6,0.5,1c-0.2,2.7-1.5,5.1-3.6,6.8C16.6,21.2,14.4,22,12.1,22zM9.3,4.4c-2.9,1-5,3.6-5.2,6.8c-0.4,4.4,2.8,8.3,7.2,8.7c2.1,0.2,4.2-0.4,5.8-1.8c1.1-0.9,1.9-2.1,2.4-3.4c-2.5,0.9-5.3,0.5-7.5-1.1C9.2,11.4,8.1,7.7,9.3,4.4z"
+                ></path>
+            </svg>
+            <svg
+                v-else
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 0 24 24"
+                class="u-light-svg"
+            >
+                <path
+                    d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"
+                ></path>
+                <path
+                    d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"
+                ></path>
+                <path
+                    d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"
+                ></path>
+                <path
+                    d="M5.6,6.6c-0.3,0-0.5-0.1-0.7-0.3L3.5,4.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C6.2,6.5,5.9,6.6,5.6,6.6z"
+                ></path>
+                <path
+                    d="M19.8,20.8c-0.3,0-0.5-0.1-0.7-0.3l-1.4-1.4c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C20.3,20.7,20,20.8,19.8,20.8z"
+                ></path>
+                <path
+                    d="M3,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S3.6,13,3,13z"
+                ></path>
+                <path
+                    d="M23,13h-2c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S23.6,13,23,13z"
+                ></path>
+                <path
+                    d="M4.2,20.8c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C4.7,20.7,4.5,20.8,4.2,20.8z"
+                ></path>
+                <path
+                    d="M18.4,6.6c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C18.9,6.5,18.6,6.6,18.4,6.6z"
+                ></path>
+            </svg>
+        </template>
+    </Switch>
+    <Switch v-model:checked="showDuty" class="u-duty-switch" />
+    <Transition>
+        <Countdown
+            v-show="showDuty"
+            class="u-duty-countdown"
+            title="Off Duty"
+            :title-style="{ fontWeight: 600 }"
+            :value="countdown"
+            format="HH:mm:ss:SSS"
+            finished-text="GO GO GO"
+            @finish="onFinish"
+        />
+    </Transition>
+    <a-row style="width: 100%">
+        <a-col :xs="5" :xl="4">
+            <a-menu
+                class="m-menus"
+                v-model:selectedKeys="current"
+                mode="inline"
+                :theme="themeDark ? 'dark' : 'light'"
+                @click="onClick"
+            >
+                <a-menu-item
+                    v-for="menu in menus"
+                    :key="menu.name"
+                    :title="menu.meta.title"
+                >
+                    <router-link :to="menu.path"
+                        >{{ menu.meta.title }} {{ menu.name }}</router-link
+                    >
+                </a-menu-item>
+            </a-menu>
+        </a-col>
+        <a-col :xs="19" :xl="20">
+            <div class="router-view" ref="routerViewRef">
+                <RouterView v-slot="{ Component }">
+                    <Transition name="fade" mode="out-in">
+                        <component :is="Component" />
+                    </Transition>
+                </RouterView>
+            </div>
+        </a-col>
+    </a-row>
+    <BackTop v-if="route.name !== 'BackTop'" :listen-to="routerViewRef" />
 </template>
 <style lang="less" scoped>
-.u-switch {
-  margin-top: 14px;
-  margin-bottom: 14px;
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+.u-theme-switch {
+    position: fixed;
+    top: 13px;
+    left: 195px;
+    z-index: 3;
+    :deep(.switch-checked) {
+        background: #faad14 !important;
+        &:hover {
+            background: #e8b339 !important;
+        }
+    }
+}
+.u-duty-switch {
+    position: fixed;
+    top: 36px;
+    right: 36px;
+    z-index: 3;
+    :deep(.switch-checked) {
+        background: #faad14 !important;
+        &:hover {
+            background: #e8b339 !important;
+        }
+    }
+}
+.u-duty-countdown {
+    position: fixed;
+    top: 36px;
+    right: 36px;
+    z-index: 2;
+}
+.u-dark-svg {
+    width: 12px;
+    height: 12px;
+    fill: #fff;
+}
+.u-light-svg {
+    width: 12px;
+    height: 12px;
+    fill: rgba(60, 60, 67, 0.75);
 }
 .m-menus {
-  overflow: auto;
-  height: calc(100vh - 50px);
+    overflow-y: auto;
+    height: 100vh;
 }
 .router-view {
-  margin-top: 50px;
-  padding: 0 48px 48px;
-  overflow: auto;
-  height: calc(100vh - 50px);
+    padding: 36px;
+    overflow-y: auto;
+    height: 100vh;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s;
 }
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

@@ -1,4 +1,7 @@
-# 通知提醒框 Notification
+# 通知提醒 Notification
+
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
 
 <br/>
 
@@ -9,52 +12,66 @@
 - 在系统四个角显示通知提醒信息
 - 系统主动推送
 
+<br/>
+
+::: tip 使用
+
+- notification.value.open(notification: Notification) // 默认使用
+- notification.value.info(notification: Notification) // info调用
+- notification.value.success(notification: Notification) // success调用
+- notification.value.error(notification: Notification) // error调用
+- notification.value.warning(notification: Notification) // warning调用
+
+:::
+
 <script setup lang="ts">
 import { ref } from 'vue'
 
 const notification = ref()
-const placement = ref('')
+
 function onOpen (info: string) {
-  notification.value.open(info) // 默认使用
-  placement.value = 'topRight'
+  notification.value.open({
+    message: 'Notification Title',
+    description: info
+  }) // 默认使用
 }
 function onInfo (info: string) {
-  notification.value.info(info) // info调用
-  placement.value = 'topRight'
+  notification.value.info({
+    message: 'Notification Title',
+    description: info
+  }) // info调用
 }
 function onSuccess (info: string) {
-  notification.value.success(info) // success调用
-  placement.value = 'topRight'
+  notification.value.success({
+    message: 'Notification Title',
+    description: info
+  }) // success调用
+}
+function onWarning (info: string) {
+  notification.value.warning({
+    message: 'Notification Title',
+    description: info
+  }) // warning调用
 }
 function onError (info: string) {
-  notification.value.error(info) // error调用
-  placement.value = 'topRight'
+  notification.value.error({
+    message: 'Notification Title',
+    description: info
+  }) // error调用
 }
-function onWarn (info: string) {
-  notification.value.warn(info) // warn调用
-  placement.value = 'topRight'
+function onOpenPlacement (place: string) {
+  notification.value.info({
+    message: 'Notification Title',
+    description: 'This is the content of the notification.',
+    placement: place
+  })
 }
 function onClose () { // 点击默认关闭按钮时触发的回调函数
   console.log('关闭notification')
 }
-function onTopLeft (info: string) {
-  notification.value.info(info)
-  placement.value = 'topLeft'
-}
-function onBottomRight (info: string) {
-  notification.value.info(info)
-  placement.value = 'bottomRight'
-}
-function onBottomLeft (info: string) {
-  notification.value.info(info)
-  placement.value = 'bottomLeft'
-}
 </script>
 
-<Notification
-  ref="notification"
-  :placement="placement"
-  @close="onClose" />
+<Notification ref="notification" @close="onClose" />
 
 ## 基本使用
 
@@ -67,9 +84,12 @@ function onBottomLeft (info: string) {
 import { ref } from 'vue'
 const notification = ref()
 function onOpen (info: string) {
-  notification.value.open(info) // warn调用
+  notification.value.open({
+    message: 'Notification Title',
+    description: info
+  }) // 默认使用
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
@@ -92,9 +112,12 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 import { ref } from 'vue'
 const notification = ref()
 function onInfo (info: string) {
-  notification.value.info(info) // warn调用
+  notification.value.info({
+    message: 'Notification Title',
+    description: info
+  }) // info调用
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
@@ -117,9 +140,12 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 import { ref } from 'vue'
 const notification = ref()
 function onSuccess (info: string) {
-  notification.value.success(info) // warn调用
+  notification.value.success({
+    message: 'Notification Title',
+    description: info
+  }) // success调用
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
@@ -142,9 +168,12 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 import { ref } from 'vue'
 const notification = ref()
 function onError (info: string) {
-  notification.value.error(info) // warn调用
+  notification.value.error({
+    message: 'Notification Title',
+    description: info
+  }) // error调用
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
@@ -156,9 +185,9 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 
 :::
 
-## warn
+## warning
 
-<Button type="primary" @click="onWarn('This is a warn notification')">Warn</Button>
+<Button type="primary" @click="onWarning('This is a warning notification')">Warning</Button>
 
 ::: details Show Code
 
@@ -166,15 +195,18 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 <script setup lang="ts">
 import { ref } from 'vue'
 const notification = ref()
-function onWarn (info: string) {
-  notification.value.warn(info) // warn调用
+function onWarning (info: string) {
+  notification.value.warning({
+    message: 'Notification Title',
+    description: info
+  }) // warning调用
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
 <template>
-  <Button type="primary" @click="onWarn('This is a warn notification')">Warn</Button>
+  <Button type="primary" @click="onWarning('This is a warning notification')">Warning</Button>
   <Notification ref="notification" @close="onClose" />
 </template>
 ```
@@ -183,7 +215,7 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 
 ## 左上角弹出
 
-<Button type="primary" @click="onTopLeft('This is a topLeft notification')">TopLeft</Button>
+<Button type="primary" @click="onOpenPlacement('topLeft')">topLeft</Button>
 
 ::: details Show Code
 
@@ -191,17 +223,20 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 <script setup lang="ts">
 import { ref } from 'vue'
 const notification = ref()
-function onTopLeft (info: string) {
-  notification.value.info(info)
-  placement.value = 'topLeft'
+function onOpenPlacement (place: string) {
+  notification.value.info({
+    message: 'Notification Title',
+    description: 'This is the content of the notification.',
+    placement: place
+  })
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
 <template>
-  <Button type="primary" @click="onTopLeft('This is a topLeft notification')">TopLeft</Button>
-  <Notification ref="notification" placement="topLeft" @close="onClose" />
+  <Button type="primary" @click="onOpenPlacement('topLeft')">topLeft</Button>
+  <Notification ref="notification" @close="onClose" />
 </template>
 ```
 
@@ -209,7 +244,7 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 
 ## 右下角弹出
 
-<Button type="primary" @click="onBottomRight('This is a bottomRight notification')">BottomRight</Button>
+<Button type="primary" @click="onOpenPlacement('bottomRight')">bottomRight</Button>
 
 ::: details Show Code
 
@@ -217,17 +252,20 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 <script setup lang="ts">
 import { ref } from 'vue'
 const notification = ref()
-function onBottomRight (info: string) {
-  notification.value.info(info)
-  placement.value = 'bottomRight'
+function onOpenPlacement (place: string) {
+  notification.value.info({
+    message: 'Notification Title',
+    description: 'This is the content of the notification.',
+    placement: place
+  })
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
 <template>
-  <Button type="primary" @click="onBottomRight('This is a bottomRight notification')">BottomRight</Button>
-  <Notification ref="notification" placement="bottomRight" @close="onClose" />
+  <Button type="primary" @click="onOpenPlacement('bottomRight')">bottomRight</Button>
+  <Notification ref="notification" @close="onClose" />
 </template>
 ```
 
@@ -235,7 +273,7 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 
 ## 左下角弹出
 
-<Button type="primary" @click="onBottomLeft('This is a bottomLeft notification')">BottomLeft</Button>
+<Button type="primary" @click="onOpenPlacement('bottomLeft')">bottomLeft</Button>
 
 ::: details Show Code
 
@@ -243,17 +281,20 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 <script setup lang="ts">
 import { ref } from 'vue'
 const notification = ref()
-function onBottomLeft (info: string) {
-  notification.value.info(info)
-  placement.value = 'bottomLeft'
+function onOpenPlacement (place: string) {
+  notification.value.info({
+    message: 'Notification Title',
+    description: 'This is the content of the notification.',
+    placement: place
+  })
 }
-function onClose () { // 点击默认关闭按钮时触发的回调函数
+function onClose () {
   console.log('关闭notification')
 }
 </script>
 <template>
-  <Button type="primary" @click="onBottomLeft('This is a bottomLeft notification')">BottomLeft</Button>
-  <Notification ref="notification" placement="bottomLeft" @close="onClose" />
+  <Button type="primary" @click="onOpenPlacement('bottomLeft')">bottomLeft</Button>
+  <Notification ref="notification" @close="onClose" />
 </template>
 ```
 
@@ -263,11 +304,22 @@ function onClose () { // 点击默认关闭按钮时触发的回调函数
 
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
-title | 消息的标题 | string | '温馨提示' | false
-duration | 自动关闭的延时时长，单位ms，默认4500ms；设置0时，不自动关闭 | number | 4500 | false
-top | 消息从顶部弹出时，距离顶部的位置，单位px | number | 24 | false
-bottom | 消息从底部弹出时，距离底部的位置，单位px | number | 24 | false
-placement | 消息弹出位置 | 'topLeft' &#124; 'topRight' &#124; 'bottomLeft' &#124; 'bottomRight' | 'topRight' | false
+message | 全局通知提醒标题，优先级低于 `Notification` 中的 `message` | string | '温馨提示' | false
+duration | 自动关闭的延时时长，单位`ms`，默认 `4500ms`；设置 `null` 时，不自动关闭 | number &#124; null | 4500 | false
+top | 消息从顶部弹出时，距离顶部的位置，单位`px` | number | 24 | false
+bottom | 消息从底部弹出时，距离底部的位置，单位`px` | number | 24 | false
+placement | 消息弹出位置，优先级低于 `Notification` 中的 `placement` | 'topLeft' &#124; 'topRight' &#124; 'bottomLeft' &#124; 'bottomRight' | 'topRight' | false
+
+## Notification Type
+
+*调用时传入的 Notification 参数*
+
+名称 | 说明 | 类型 | 必传
+-- | -- | -- | --
+message | 通知提醒标题 | string | false
+description | 通知提醒内容 | string | true
+mode | 通知提醒类型 | 'open' &#124; 'info' &#124; 'success' &#124; 'warning' &#124; 'error' | false
+placement | 通知提醒弹出位置 | 'topLeft' &#124; 'topRight' &#124; 'bottomLeft' &#124; 'bottomRight' | false
 
 ## Events
 

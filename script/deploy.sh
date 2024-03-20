@@ -4,10 +4,10 @@
 set -e
 
 # 重新打包组件库
-yarn build
+pnpm build
 
 # 打包生成静态文件
-yarn docs:build
+pnpm docs:build
 
 # 进入待发布的 dist/ 目录
 cd docs/.vitepress/dist

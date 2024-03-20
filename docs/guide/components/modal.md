@@ -1,5 +1,8 @@
 # 信息提示 Modal
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *模态对话框*
@@ -55,8 +58,8 @@ function showErrorModal (content: string) {
   center.value = true
   visible.value = true
 }
-function showWarnModal (content: string) {
-  modal.value.warn({
+function showWarningModal (content: string) {
+  modal.value.warning({
     title: 'Do you See these items ?',
     content: content
   })
@@ -109,6 +112,13 @@ import { ref } from 'vue'
 const modal = ref()
 const loading = ref(false)
 const visible = ref(false)
+function showConfirmModal (content: string) {
+  modal.value.confirm({
+    title: 'Do you Want to submit these items ?',
+    content: content
+  })
+  visible.value = true
+}
 function onCancel () { // “取消”按钮回调
   visible.value = false
 }
@@ -146,6 +156,13 @@ import { ref } from 'vue'
 const modal = ref()
 const loading = ref(false)
 const visible = ref(false)
+function showEraseModal (content: string) {
+  modal.value.erase({
+    title: 'Do you Want to delete these items ?',
+    content: content
+  })
+  visible.value = true
+}
 function onCancel () { // “取消”按钮回调
   visible.value = false
 }
@@ -182,6 +199,13 @@ import { ref } from 'vue'
 
 const modal = ref()
 const visible = ref(false)
+function showInfoModal (content: string) {
+  modal.value.info({
+    title: 'Do you See these items ?',
+    content: content
+  })
+  visible.value = true
+}
 function onKnow () { // “我知道了”按钮回调
   visible.value = false
 }
@@ -209,6 +233,13 @@ import { ref } from 'vue'
 
 const modal = ref()
 const visible = ref(false)
+function showSuccessModal (content: string) {
+  modal.value.success({
+    title: 'Do you See these items ?',
+    content: content
+  })
+  visible.value = true
+}
 function onKnow () { // “我知道了”按钮回调
   visible.value = false
 }
@@ -236,6 +267,13 @@ import { ref } from 'vue'
 
 const modal = ref()
 const visible = ref(false)
+function showErrorModal (content: string) {
+  modal.value.error({
+    title: 'Do you See these items ?',
+    content: content
+  })
+  visible.value = true
+}
 function onKnow () { // “我知道了”按钮回调
   visible.value = false
 }
@@ -251,9 +289,9 @@ function onKnow () { // “我知道了”按钮回调
 
 :::
 
-## warn
+## warning
 
-<Button type="primary" @click="showWarnModal('Some descriptions ...')">Warn</Button>
+<Button type="primary" @click="showWarningModal('Some descriptions ...')">Warning</Button>
 
 ::: details Show Code
 
@@ -263,12 +301,20 @@ import { ref } from 'vue'
 
 const modal = ref()
 const visible = ref(false)
+function showWarningModal (content: string) {
+  modal.value.warning({
+    title: 'Do you See these items ?',
+    content: content
+  })
+  center.value = true
+  visible.value = true
+}
 function onKnow () { // “我知道了”按钮回调
   visible.value = false
 }
 </script>
 <template>
-  <Button type="primary" @click="showWarnModal('Some descriptions ...')">Warn</Button>
+  <Button type="primary" @click="showWarningModal('Some descriptions ...')">Warning</Button>
   <Modal
     ref="modal"
     :visible="visible"
@@ -290,6 +336,13 @@ import { ref } from 'vue'
 
 const modal = ref()
 const visible = ref(false)
+function showFixModal (content: string) {
+  modal.value.info({
+    title: 'Do you See these items ?',
+    content: content
+  })
+  visible.value = true
+}
 function onKnow () { // “我知道了”按钮回调
   visible.value = false
 }
@@ -311,12 +364,12 @@ function onKnow () { // “我知道了”按钮回调
 
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
-width | 提示框宽度，单位px | number | 420 | false
+width | 提示框宽度，单位`px` | number | 420 | false
 cancelText | 取消按钮文字 | string | '取消' | false
 okText | 确认按钮文字 | string | '确定' | false
 noticeText | 通知按钮文字 | string | '知道了' | false
-center | 水平垂直居中：true，固定高度水平居中：false | boolean | true | false
-top | 固定高度水平居中时，距顶部高度，单位px | number | 100 | false
+center | `true`: 水平垂直居中；`false`: 固定高度水平居中 | boolean | true | false
+top | 固定高度水平居中时，距顶部高度，单位`px` | number | 100 | false
 loading | 加载中 | boolean | false | false
 visible | 是否可见 | boolean | false | false
 

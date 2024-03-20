@@ -32,7 +32,6 @@ const props = withDefaults(defineProps<Props>(), {
     Time picker: 'HH:mm'
     Time picker range: 'HH:mm - HH:mm'
   */
-  // format: 'MM/dd/yyyy',
   showTime: false,
   showToday: false,
   // multiCalendars: false,
@@ -71,7 +70,7 @@ const year = computed(() => {
       :year-picker="year"
       now-button-label="今天"
       :show-now-button="showToday"
-      :auto-apply="true"
+      auto-apply
       text-input
       :model-type="modelType"
       :day-names="['一', '二', '三', '四', '五', '六', '七']"
@@ -102,7 +101,7 @@ const year = computed(() => {
   --dp-success-color-disabled: #428f59;
   --dp-icon-color: #959595;
   --dp-danger-color: #e53935;
-  --dp-highlight-color: rgba(0, 92, 178, 0.2);
+  --dp-highlight-color: rgba(0, 92, 178, .2);
 }
 .dp__theme_light { // light theme
   --dp-background-color: #ffffff;
@@ -123,6 +122,6 @@ const year = computed(() => {
   --dp-success-color-disabled: #a3d9b1;
   --dp-icon-color: #959595;
   --dp-danger-color: #ff6f60;
-  --dp-highlight-color: rgba(25, 118, 210, 0.1);
+  --dp-highlight-color: rgba(25, 118, 210, .1);
 }
 </style>

@@ -1,5 +1,8 @@
 # 进度条 Progress
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *展示操作的当前进度*
@@ -101,15 +104,14 @@ const percent = ref(60)
 
 ## 进度圈
 
-<Progress
-  :width="120"
-  :percent="percent"
-  type="circle" />
-
-<br/>
-
-<Button @click="onDecline(5)" size="large" style="margin-right: 30px; margin-top: 30px;">Decline-</Button>
-<Button @click="onIncrease(5)" size="large">Increase+</Button>
+<Space align="center" :size="30">
+  <Progress
+    type="circle"
+    :width="120"
+    :percent="percent" />
+  <Button @click="onDecline(5)" size="large">Decline-</Button>
+  <Button @click="onIncrease(5)" size="large">Increase+</Button>
+</Space>
 
 ::: details Show Code
 
@@ -136,13 +138,69 @@ function onDecline (scale: number) {
 }
 </script>
 <template>
+  <Space align="center" :size="30">
+    <Progress
+      type="circle"
+      :width="120"
+      :percent="percent" />
+    <Button @click="onDecline(5)" size="large">Decline-</Button>
+    <Button @click="onIncrease(5)" size="large">Increase+</Button>
+  </Space>
+</template>
+```
+
+:::
+
+## 自定义文字格式
+
+<Space align="center" :size="30">
   <Progress
-    :width="120"
+    type="circle"
+    :width="160"
+    :stroke-width="10"
     :percent="percent"
-    type="circle" />
-  <br/>
-  <Button @click="onDecline(5)" size="large" style="margin-right: 30px; margin-top: 30px;">Decline-</Button>
-  <Button @click="onIncrease(5)" size="large">Increase+</Button>
+    :format="(percent: number) => `${percent} Days`" />
+  <Progress
+    type="circle"
+    :width="160"
+    :stroke-width="10"
+    :percent="100"
+    :format="() => 'Done'" />
+  <Progress type="circle" :width="160" :stroke-width="10" :percent="percent">
+    <template #format="{ percent }">
+      <span style="color: magenta">{{ percent }}%</span>
+    </template>
+  </Progress>
+</Space>
+
+::: details Show Code
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const percent = ref(60)
+</script>
+<template>
+  <Space align="center" :size="30">
+    <Progress
+      type="circle"
+      :width="160"
+      :stroke-width="10"
+      :percent="percent"
+      :format="(percent: number) => `${percent} Days`" />
+    <Progress
+      type="circle"
+      :width="160"
+      :stroke-width="10"
+      :percent="100"
+      :format="() => 'Done'" />
+    <Progress type="circle" :width="160" :stroke-width="10" :percent="percent">
+      <template #format="{ percent }">
+        <span style="color: magenta">{{ percent }}%</span>
+      </template>
+    </Progress>
+  </Space>
 </template>
 ```
 
@@ -154,9 +212,10 @@ function onDecline (scale: number) {
 -- | -- | -- | -- | --
 width | 进度条总宽度 | number &#124; string | '100%' | false
 percent | 当前进度百分比 | number | 0 | false
-strokeColor | 进度条的色彩，传入 string 时为纯色，传入 object 时为渐变 | string &#124; Gradient | '#1677FF' | false
-strokeWidth | 进度条线的宽度，单位px | number | 8 | false
+strokeColor | 进度条的色彩，传入 `string` 时为纯色，传入 `Gradient` 时为渐变 | string &#124; Gradient | '#1677FF' | false
+strokeWidth | 进度条线的宽度，单位`px` | number | 8 | false
 showInfo | 是否显示进度数值或状态图标 | boolean | true | false
+format | 内容的模板函数 | Function &#124; slot | (percent: number) => percent + '%' | false
 type | 进度条类型 | 'line' &#124; 'circle' | 'line' | false
 
 ## Gradient Type

@@ -1,5 +1,8 @@
 # 步骤条 Steps
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *引导用户按照流程完成任务的导航条*
@@ -81,13 +84,12 @@ const current = ref(2)
 *设置 v-model: current 后即可点击*
 
 <br/>
-
 <Steps :steps="steps" v-model:current="current" @change="onChange" />
-
 <br/>
-
-<Button @click="onPrevious()" class="mt30 mr30">Previous</Button>
-<Button @click="onNext()">Next</Button>
+<Space>
+  <Button @click="onPrevious()" class="mt30 mr30">Previous</Button>
+  <Button @click="onNext()">Next</Button>
+</Space>
 
 ::: details Show Code
 
@@ -128,8 +130,11 @@ function onNext () {
 </script>
 <template>
   <Steps :steps="steps" v-model:current="current" @change="onChange" />
-  <Button @click="onPrevious()" class="mt30 mr30">Previous</Button>
-  <Button @click="onNext()">Next</Button>
+  <br/>
+  <Space>
+    <Button @click="onPrevious()" class="mt30 mr30">Previous</Button>
+    <Button @click="onNext()">Next</Button>
+  </Space>
 </template>
 ```
 
@@ -140,9 +145,9 @@ function onNext () {
 参数 | 说明 | 类型 | 默认值 | 必传
 -- | -- | -- | -- | --
 steps | 步骤数组 | Step[] | [] | true
-current(v-model) | 当前选中的步骤，设置 v-model 后，Steps 变为可点击状态。从1开始计数 | number | 1 | false
-width | 步骤条总宽度，单位px | number &#124; string | '100%' | false
-descMaxWidth | 描述文本最大宽度 | number | 120 | false
+current <Tag color="cyan">v-model</Tag> | 当前选中的步骤，设置 `v-model` 后，`Steps` 变为可点击状态。从 `1` 开始计数 | number | 1 | false
+width | 步骤条总宽度，单位`px` | number &#124; string | '100%' | false
+descMaxWidth | 描述文本最大宽度，单位`px` | number | 120 | false
 
 ## Step Type
 

@@ -12,7 +12,7 @@ export function dateFormat (value: number|string|Date = Date.now(), format = 'YY
   function fixedTwo (value: number): string {
     return value < 10 ? '0' + value : String(value)
   }
-  var showTime = format
+  let showTime = format
   if (showTime.includes('SSS')) {
     const S = date.getMilliseconds()
     showTime = showTime.replace('SSS', '0'.repeat(3 - String(S).length) + S)
@@ -34,19 +34,19 @@ export function dateFormat (value: number|string|Date = Date.now(), format = 'YY
     showTime = showTime.includes('HH') ? showTime.replace('HH', fixedTwo(H)) : showTime.replace('H', String(H))
   }
   if (showTime.includes('m')) {
-    var m = date.getMinutes()
+    const m = date.getMinutes()
     showTime = showTime.includes('mm') ? showTime.replace('mm', fixedTwo(m)) : showTime.replace('m', String(m))
   }
   if (showTime.includes('s')) {
-    var s = date.getSeconds()
+    const s = date.getSeconds()
     showTime = showTime.includes('ss') ? showTime.replace('ss', fixedTwo(s)) : showTime.replace('s', String(s))
   }
   return showTime
 }
 // @ts-ignore 兼容性requestAnimationFrame
-export const requestAnimationFrame = typeof window !== 'undefined' ? window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame : () => {}
+export const requestAnimationFrame = typeof window !== 'undefined' ? (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame) : () => {}
 // @ts-ignore 兼容性cancelAnimationFrame
-export const cancelAnimationFrame = typeof window !== 'undefined' ? window.cancelAnimationFrame || window.mozCancelAnimationFrame : () => {}
+export const cancelAnimationFrame = typeof window !== 'undefined' ? (window.cancelAnimationFrame || window.mozCancelAnimationFrame) : () => {}
 /*
   使用 requestAnimationFrame 模拟 setTimeout 和 setInterval
   一共接收三个参数：
@@ -59,8 +59,8 @@ export const cancelAnimationFrame = typeof window !== 'undefined' ? window.cance
 */
 export function rafTimeout (fn: Function, delay = 0, interval = false): object {
   // @ts-ignore
-  const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
-  var start: any = null
+  const requestAnimationFrame = typeof window !== 'undefined' ? (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame) : () => {}
+  let start: any = null
   function timeElapse (timestamp: number) {
     /*
       timestamp参数：与performance.now()的返回值相同，它表示requestAnimationFrame() 开始去执行回调函数的时刻
@@ -86,13 +86,15 @@ export function rafTimeout (fn: Function, delay = 0, interval = false): object {
 }
 // 用于取消 rafTimeout 函数
 export function cancelRaf (raf: { id: number }): void {
+  // @ts-ignore
+  const cancelAnimationFrame = typeof window !== 'undefined' ? (window.cancelAnimationFrame || window.mozCancelAnimationFrame) : () => {}
   if (raf && raf.id) {
     cancelAnimationFrame(raf.id)
   }
 }
 // 节流函数throttle
 export function throttle (fn: Function, delay = 300): any {
-  var valid = true
+  let valid = true
   return function () {
     if (valid) {
       valid = false // 将函数置为无效
@@ -118,9 +120,9 @@ export function debounce (fn: Function, delay = 300): any {
 export function add (num1: number, num2: number): number {
   const num1DeciStr = String(num1).split('.')[1]
   const num2DeciStr = String(num2).split('.')[1]
-  let maxLen = Math.max(num1DeciStr?.length || 0, num2DeciStr?.length || 0) // 两数中最长的小数位长度
-  let num1Str = num1.toFixed(maxLen) // 补零，返回字符串
-  let num2Str = num2.toFixed(maxLen)
+  const maxLen = Math.max(num1DeciStr?.length || 0, num2DeciStr?.length || 0) // 两数中最长的小数位长度
+  const num1Str = num1.toFixed(maxLen) // 补零，返回字符串
+  const num2Str = num2.toFixed(maxLen)
   const result = +(num1Str.replace('.', '')) + +(num2Str.replace('.', '')) // 转换为整数相加
   return result / Math.pow(10, maxLen)
 }
@@ -130,14 +132,14 @@ export function add (num1: number, num2: number): number {
   name: 自定义文件名，未传时，从文件地址中自动获取文件名称
 */
 export function downloadFile (url: string, name: string) {
-  var fileName = ''
+  let fileName = ''
   if (name) {
     fileName = name
   } else {
     const res = url.split('?')[0].split('/')
     fileName = res[res.length - 1]
   }
-  var xhr = new XMLHttpRequest()
+  const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.responseType = 'blob'
   xhr.onload = function () {
@@ -156,3 +158,56 @@ export function downloadFile (url: string, name: string) {
   }
   xhr.send()
 }
+/*
+  自定义保留 precision 位小数，并使用 separator 分隔符进行数字格式化
+  value：格式化目标数字
+  precision：精度，保留小数点后几位，默认2位
+  separator：千分位分隔符，默认为','
+  decimal：小数点符号，默认'.'
+  prefix：前缀字符，默认''
+  suffix：后缀字符，默认''
+  formatNumber(123456789.87654321, 2, ',') // 123,456,789.88
+*/
+export function formatNumber (value: number|string, precision = 2, separator = ',', decimal = '.', prefix = '', suffix = ''): string {
+  if (Number(value) === 0) {
+    return Number(value).toFixed(precision)
+  }
+  if (!value) {
+    return ''
+  }
+  value = Number(value).toFixed(precision)
+  value += ''
+  const x = value.split('.')
+  let x1 = x[0]
+  const x2 = x.length > 1 ? decimal + x[1] : ''
+  const rgx = /(\d+)(\d{3})/
+  function isNumber (val: any) {
+    return Object.prototype.toString.call(val) === '[object Number]'
+  }
+  if (separator && !isNumber(separator)) {
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + separator + '$2')
+    }
+  }
+  return prefix + x1 + x2 + suffix
+}
+/*
+  在 <html> 根元素上动态切换 dark 模式，只在根元素添加 dark 类值，具体样式需自行添加
+  // dark 主题样式参考如下：
+  html {
+    transition: filter .3s ease-in-out;
+  }
+  · invert(): 反转输入图像，1表示完全反转
+  · hue-rotate(): 在输入图像上应用色相旋转
+  html.dark { // 暗黑模式
+    filter: invert(1) hue-rotate(180deg);
+    img, video { // 将图片和视频再次反转以恢复原本的颜色
+      filter: invert(1) hue-rotate(180deg);
+    }
+  }
+*/
+export function toggleDark () {
+  // 如果 <html> 上 dark 类值已存在，则移除它，否则添加它
+  document.documentElement.classList.toggle('dark')
+}
+  

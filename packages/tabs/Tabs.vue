@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
+import { rafTimeout } from '../index'
 interface Tab {
   key: string | number // 对应 activeKey
   tab: string // 标签页显示文字
@@ -9,53 +10,89 @@ interface Tab {
 interface Props {
   tabPages: Array<Tab> // 标签页数组
   centered?: boolean // 标签是否居中展示
-  size?: 'small'|'large' // 标签页大小 可选 small | large
+  size?: 'small'|'middle'|'large' // 标签页大小
+  type?: 'line'|'card' // 标签页的样式
+  gutter?: number // tabs 之前的间隙大小，单位px
   activeKey?: string|number // (v-model)当前激活 tab 面板的 key
 }
 const props = withDefaults(defineProps<Props>(), {
   tabPages: () => [],
   centered: false,
-  size: 'small',
+  size: 'middle',
+  type: 'line',
+  gutter: undefined,
   activeKey: ''
 })
 const tabs = ref() // 所有tabs的ref模板引用
 const left = ref(0)
 const width = ref(0)
 const wrap = ref()
+const wrapWidth = ref()
 const nav = ref()
+const navWidth = ref()
 const showWheel = ref(false) // 导航是否有滚动
 const scrollMax = ref(0) // 最大滚动距离
 const scrollLeft = ref(0) // 滚动距离
-watchEffect(() => { // 回调立即执行一次，同时会自动跟踪回调中所依赖的所有响应式依赖
+const activeIndex = computed(() => {
+  return props.tabPages.findIndex(page => page.key === props.activeKey)
+})
+watch(
+  () => [props.tabPages, props.gutter, props.size, props.type],
+  () => {
+    rafTimeout(() => {
+      getNavWidth()
+    }, 300)
+  },
+  {
+    deep: true, // 强制转成深层侦听器
+    flush: 'post'
+  }
+)
+watch(
+  () => props.activeKey,
+  () => {
+    if (props.type === 'line') {
+      getBarDisplay()
+    }
+  },
+  {
+    flush: 'post' // 在侦听器回调中访问被 Vue 更新之后的 DOM
+  }
+)
+onMounted(() => {
   getNavWidth()
-}, { flush: 'post' })
-watchEffect(() => { // 若想要侦听器回调中能访问被 Vue 更新之后的 DOM，你需要指明 flush: 'post' 选项
-  getBarPosition(props.activeKey)
-}, { flush: 'post' })
+})
 const emits = defineEmits(['update:activeKey', 'change'])
-function findElement (key: string|number) {
-  return tabs.value.find((element: any) => element.__vnode.key === key)
-}
-function getBarPosition (key: string|number) {
-  const el = findElement(key)
+function getBarDisplay () {
+  const el = tabs.value[activeIndex.value]
   if (el) {
     left.value = el.offsetLeft
     width.value = el.offsetWidth
+    if (showWheel.value) {
+      if (left.value < scrollLeft.value) {
+        scrollLeft.value = left.value
+      }
+      if (left.value + width.value - wrapWidth.value > scrollLeft.value) {
+        scrollLeft.value = left.value + width.value - wrapWidth.value
+      }
+    }
   } else {
     left.value = 0
     width.value = 0
   }
 }
 function getNavWidth () {
-  const wrapWidth = wrap.value.offsetWidth
-  const navWidth = nav.value.offsetWidth
-  if (navWidth > wrapWidth) {
+  wrapWidth.value = wrap.value.offsetWidth
+  navWidth.value = nav.value.offsetWidth
+  if (navWidth.value > wrapWidth.value) {
     showWheel.value = true
-    scrollMax.value = navWidth - wrapWidth
+    scrollMax.value = navWidth.value - wrapWidth.value
+  }
+  if (props.type === 'line') {
+    getBarDisplay()
   }
 }
 function onTab (key: string|number) {
-  getBarPosition(key)
   emits('update:activeKey', key)
   emits('change', key)
 }
@@ -84,7 +121,7 @@ function onWheel (e: WheelEvent) {
 }
 </script>
 <template>
-  <div :class="`m-tabs ${size}`">
+  <div class="m-tabs">
     <div class="m-tabs-nav">
       <div
         ref="wrap"
@@ -98,12 +135,18 @@ function onWheel (e: WheelEvent) {
           <div
             ref="tabs"
             class="u-tab"
-            :class="{'u-tab-active': activeKey === page.key, 'u-tab-disabled': page.disabled}"
+            :class="[
+              `u-tab-${size}`,
+              { 'u-tab-card': type === 'card', 'u-tab-disabled': page.disabled },
+              { 'u-tab-line-active': activeKey === page.key && type === 'line' },
+              { 'u-tab-card-active': activeKey === page.key && type === 'card' }
+            ]"
+            :style="`margin-left: ${index !== 0 ? gutter : null}px;`"
             @click="page.disabled ? () => false : onTab(page.key)"
-            v-for="page in tabPages" :key="page.key">
+            v-for="(page, index) in tabPages" :key="index">
             {{ page.tab }}
           </div>
-          <div class="u-tab-bar" :style="`left: ${left}px; width: ${width}px;`"></div>
+          <div class="u-tab-bar" :class="{ 'u-card-hidden': type === 'card' }" :style="`left: ${left}px; width: ${width}px;`"></div>
         </div>
       </div>
     </div>
@@ -120,16 +163,23 @@ function onWheel (e: WheelEvent) {
 <style lang="less" scoped>
 .m-tabs {
   display: flex;
-  color: rgba(0, 0, 0, 0.88);
-  line-height: 1.57;
+  color: rgba(0, 0, 0, .88);
+  line-height: 1.5714285714285714;
   flex-direction: column; // 子元素将垂直显示，正如一个列一样。
   .m-tabs-nav {
     position: relative;
     display: flex;
     flex: none;
     align-items: center;
-    margin-bottom: 16px;
-    border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+    margin: 0 0 16px 0;
+    &::before {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      border-bottom: 1px solid rgba(5, 5, 5, .06);
+      content: '';
+    }
     .m-tabs-nav-wrap {
       position: relative;
       display: flex;
@@ -142,23 +192,23 @@ function onWheel (e: WheelEvent) {
         position: absolute;
         z-index: 1;
         opacity: 0;
-        transition: opacity 0.3s;
+        transition: opacity .3s;
         content: '';
         pointer-events: none;
         top: 0;
         bottom: 0;
         width: 32px;
       }
-      &:before {
+      &::before {
         .shadow();
         left: 0;
-        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.08);
+        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, .08);
         
       }
-      &:after {
+      &::after {
         .shadow();
         right: 0;
-        box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.08);
+        box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, .08);
       }
       .m-tabs-nav-list {
         position: relative;
@@ -167,10 +217,13 @@ function onWheel (e: WheelEvent) {
           position: relative;
           display: inline-flex;
           align-items: center;
+          padding: 12px 0;
+          font-size: 14px;
           background: transparent;
           border: 0;
+          outline: none;
           cursor: pointer;
-          transition: all 0.3s;
+          transition: all .3s;
           &:not(:first-child) {
             margin-left: 32px;
           }
@@ -178,15 +231,39 @@ function onWheel (e: WheelEvent) {
             color: @themeColor;
           }
         }
-        .u-tab-active {
+        .u-tab-small {
+          font-size: 14px;
+          padding: 8px 0;
+        }
+        .u-tab-large {
+          font-size: 16px;
+          padding: 16px 0;
+        }
+        .u-tab-card {
+          border-radius: 8px 8px 0 0;
+          padding: 8px 16px;
+          background: rgba(0, 0, 0, .02);
+          border: 1px solid rgba(5, 5, 5, .06);
+          transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+          &:not(:first-child) {
+            margin-left: 2px;
+          }
+        }
+        .u-tab-line-active {
           color: @themeColor;
-          text-shadow: 0 0 0.25px currentcolor;
+          text-shadow: 0 0 .25px currentcolor;
+        }
+        .u-tab-card-active {
+          border-bottom-color: #ffffff;
+          color: @themeColor;
+          background: #ffffff;
+          text-shadow: 0 0 .25px currentcolor;
         }
         .u-tab-disabled {
-          color: rgba(0, 0, 0, 0.25);
+          color: rgba(0, 0, 0, .25);
           cursor: not-allowed;
           &:hover {
-            color: rgba(0, 0, 0, 0.25);
+            color: rgba(0, 0, 0, .25);
           }
         }
         .u-tab-bar {
@@ -194,8 +271,11 @@ function onWheel (e: WheelEvent) {
           background: @themeColor;
           pointer-events: none;
           height: 2px;
-          transition: width 0.3s,left 0.3s,right 0.3s;
+          transition: width .3s,left .3s,right .3s;
           bottom: 0;
+        }
+        .u-card-hidden {
+          visibility: hidden;
         }
       }
     }
@@ -203,12 +283,12 @@ function onWheel (e: WheelEvent) {
       justify-content: center;
     }
     .before-shadow-active {
-      &:before {
+      &::before {
         opacity: 1;
       }
     }
     .after-shadow-active {
-      &:after {
+      &::after {
         opacity: 1;
       }
     }
@@ -221,19 +301,8 @@ function onWheel (e: WheelEvent) {
     .m-tabs-content {
       position: relative;
       width: 100%;
+      height: 100%;
     }
-  }
-}
-.small {
-  font-size: 14px;
-  .u-tab {
-    padding: 12px 0;
-  }
-}
-.large {
-  font-size: 16px;
-  .u-tab {
-    padding: 16px 0;
   }
 }
 </style>

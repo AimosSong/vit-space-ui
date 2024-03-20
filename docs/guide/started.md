@@ -1,5 +1,8 @@
 # 快速上手
 
+<BackTop />
+<Watermark fullscreen content="Vit Space UI" />
+
 ## 安装
 
 **With PNPM**
@@ -10,7 +13,7 @@ $ pnpm i vit-space-ui
 $ pnpm add vit-space-ui
 ```
 
-**With Yarn**
+**With YARN**
 
 ```bash
 $ yarn add vit-space-ui
@@ -24,7 +27,7 @@ $ npm i vit-space-ui
 
 ## 使用
 
-**Global**
+> **Global**
 
 ```ts
 import { createApp } from "vue";
@@ -39,7 +42,7 @@ app.use(VitSpaceUI);
 app.mount("#app");
 ```
 
-**Local**
+> **Local**
 
 ```vue
 <script setup lang="ts">
@@ -48,6 +51,6 @@ import "vit-space-ui/css";
 </script>
 
 <template>
-  <Button></Button>
+    <Button></Button>
 </template>
 ```

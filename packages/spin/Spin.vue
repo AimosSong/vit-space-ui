@@ -3,7 +3,7 @@ interface Props {
   spinning?: boolean // 是否为加载中状态
   size?: 'small'|'default'|'large' // 组件大小，可选 small default large
   tip?: string // 描述文案
-  indicator?: 'dot'|'static-circle'|'dynamic-circle' // 加载指示符
+  indicator?: 'dot'|'quarter-circle'|'three-quarters-circle'|'dynamic-circle' // 加载指示符
   color?: string // 主题颜色
 }
 withDefaults(defineProps<Props>(), {
@@ -24,9 +24,10 @@ withDefaults(defineProps<Props>(), {
           <span class="u-dot-item"></span>
           <span class="u-dot-item"></span>
         </div>
-        <div v-if="indicator==='static-circle'" class="u-spin-circle"></div>
+        <div v-if="indicator==='quarter-circle'" class="u-quarter-circle"></div>
+        <div v-if="indicator==='three-quarters-circle'" class="u-three-quarters-circle"></div>
         <div v-if="indicator==='dynamic-circle'" class="m-dynamic-circle">
-          <svg class="circular" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none"></circle></svg>
+          <svg  class="circular" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none"></circle></svg>
         </div>
         <p class="u-tip" v-show="tip">{{ tip }}</p>
       </div>
@@ -41,6 +42,10 @@ withDefaults(defineProps<Props>(), {
   position: relative;
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 .m-spin {
   position: absolute;
@@ -104,24 +109,33 @@ withDefaults(defineProps<Props>(), {
         -webkit-animation-delay: 1.2s;
       }
     }
-    .u-spin-circle {
+    .u-quarter-circle {
+      display: inline-block;
+      border-radius: 50%;
+      border-style: solid;
+      border-color: transparent;
+      border-top-color: var(--color); // 显示1/4圆
+      animation: loading-circle 1s infinite linear;
+      -webkit-animation: loading-circle 1s infinite linear;
+    }
+    .u-three-quarters-circle {
       display: inline-block;
       border-radius: 50%;
       border-style: solid;
       border-color: var(--color);
       border-top-color: transparent; // 隐藏1/4圆
-      animation: loadingCircle 1s infinite linear;
-      -webkit-animation: loadingCircle 1s infinite linear;
-      @keyframes loadingCircle {
-        100% {
-          transform: rotate(360deg);
-        }
+      animation: loading-circle 1s infinite linear;
+      -webkit-animation: loading-circle 1s infinite linear;
+    }
+    @keyframes loading-circle {
+      100% {
+        transform: rotate(360deg);
       }
     }
     .m-dynamic-circle {
       display: inline-block;
       .circular {
-        display: inline;
+        display: inline-block;
         animation: loading-rotate 2s linear infinite;
         @keyframes loading-rotate {
           100% {
@@ -169,7 +183,12 @@ withDefaults(defineProps<Props>(), {
         height: 12px;
       }
     }
-    .u-spin-circle {
+    .u-quarter-circle {
+      width: 40px;
+      height: 40px;
+      border-width: 4px;
+    }
+    .u-three-quarters-circle {
       width: 40px;
       height: 40px;
       border-width: 4px;
@@ -196,7 +215,12 @@ withDefaults(defineProps<Props>(), {
         height: 10px;
       }
     }
-    .u-spin-circle {
+    .u-quarter-circle {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    .u-three-quarters-circle {
       width: 32px;
       height: 32px;
       border-width: 3px;
@@ -223,7 +247,12 @@ withDefaults(defineProps<Props>(), {
         height: 8px;
       }
     }
-    .u-spin-circle {
+    .u-quarter-circle {
+      width: 24px;
+      height: 24px;
+      border-width: 2px;
+    }
+    .u-three-quarters-circle {
       width: 24px;
       height: 24px;
       border-width: 2px;
@@ -246,6 +275,6 @@ withDefaults(defineProps<Props>(), {
 .m-spin-mask {
   user-select: none;
   pointer-events: none;
-  opacity: 0.4;
+  opacity: .4;
 }
 </style>

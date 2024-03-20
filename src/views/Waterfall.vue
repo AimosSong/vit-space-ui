@@ -8,7 +8,7 @@ function loadImages () {
     images.value.push({
       title: `image-${i}`,
       link: '',
-      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.1/${i}.jpg`
+      src: `https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.0.5/${i}.jpg`
     })
   }
 }
@@ -18,14 +18,16 @@ onBeforeMount(() => { // 组件已完成响应式状态设置，但未创建DOM�
 </script>
 <template>
   <div>
-    <h2 class="mb10">Waterfall 瀑布流基本使用 (默认使用JS计算进行布局展示)</h2>
-    <Waterfall
-      :images="images"
-      :width="1100" />
-    <h2 class="mt30 mb10">瀑布流使用CSS布局展示 (mode: CSS)</h2>
+    <h1>Waterfall 瀑布流</h1>
+    <h2 class="mt30 mb10">基本使用</h2>
+    <Waterfall :images="images" :width="1100" />
+    <h2 class="mt30 mb10">自定义展示</h2>
     <Waterfall
       :images="images"
       :width="1100"
-      mode="CSS" />
+      :column-count="4"
+      :column-gap="10"
+      background-color="#e1faeb"
+      :border-radius="6" />
   </div>
 </template>

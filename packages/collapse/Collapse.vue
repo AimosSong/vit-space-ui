@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { rafTimeout } from '../index'
 interface Collapse {
   key?: string|number // 对应activeKey，如果没有传入key属性，则默认使用数据索引(0,1,2...)绑定
@@ -26,18 +26,31 @@ const props = withDefaults(defineProps<Props>(), {
   textFontSize: 0,
   showArrow: true
 })
-watchEffect(() => {
-  getCollapseHeight(props.collapseData.length) // 获取各个面板内容高度
-}, { flush: 'post' })
 const text = ref()
 const collapseHeight = ref<any[]>([])
-function getCollapseHeight (len: number) {
-  for (let n = 0; n < len; n++) {
-    collapseHeight.value.push(text.value[n].offsetHeight)
+const len = computed(() => {
+  return props.collapseData.length
+})
+watch(
+  () => props.collapseData,
+  (to) => {
+    getCollapseHeight() // 获取各个面板内容高度
+  },
+  {
+    deep: true,
+    flush: 'post'
+  }
+)
+function getCollapseHeight () {
+  for (let n = 0; n < len.value; n++) {
+    collapseHeight.value[n] = text.value[n].offsetHeight
   }
 }
+onMounted(() => {
+  getCollapseHeight()
+})
 const emits = defineEmits(['update:activeKey', 'change'])
-function dealEmit (value: any) {
+function emitValue (value: any) {
   emits('update:activeKey', value)
   emits('change', value)
 }
@@ -45,15 +58,15 @@ function onClick (key: number|string) {
   if (activeJudge(key)) {
     if (Array.isArray(props.activeKey)) {
       const res = (props.activeKey as any[]).filter(actKey => actKey!== key)
-      dealEmit(res)
+      emitValue(res)
     } else {
-      dealEmit(null)
+      emitValue(null)
     }
   } else {
     if (Array.isArray(props.activeKey)) {
-      dealEmit([...props.activeKey, key])
+      emitValue([...props.activeKey, key])
     } else {
-      dealEmit(key)
+      emitValue(key)
     }
   }
 }
@@ -90,7 +103,7 @@ function onCopy (index: number) {
           <slot name="header" :header="data.header" :key="data.key || index">{{ data.header || '--' }}</slot>
         </div>
       </div>
-      <div class="u-collapse-content" :class="{'u-collapse-copyable': copyable}" :style="`height: ${activeJudge(data.key || index) ? collapseHeight[index]:0}px;`">
+      <div class="u-collapse-content" :class="{'u-collapse-copyable': copyable}" :style="`height: ${activeJudge(data.key || index) ? collapseHeight[index]:0}px; opacity: ${activeJudge(data.key || index) ? 1:0};`">
         <div class="u-lang">
           <slot name="lang" :lang="lang" :key="data.key || index">{{ lang }}</slot>
         </div>
@@ -104,7 +117,7 @@ function onCopy (index: number) {
 </template>
 <style lang="less" scoped>
 .m-collapse {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(0, 0, 0, .02);
   border: 1px solid #d9d9d9;
   border-bottom: 0;
   border-radius: 8px;
@@ -120,7 +133,7 @@ function onCopy (index: number) {
       position: relative;
       padding: 12px 16px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all .3s;
       .u-arrow {
         position: absolute;
         width: 12px;
@@ -129,11 +142,11 @@ function onCopy (index: number) {
         bottom: 0;
         margin: auto 0;
         fill: rgba(0,0,0,.88);
-        transition: transform 0.3s;
+        transition: transform .3s;
       }
       .u-header {
         display: inline-block;
-        color: rgba(0, 0, 0, 0.88);
+        color: rgba(0, 0, 0, .88);
         line-height: 1.5714285714285714;
       }
       .ml24 {
@@ -142,10 +155,9 @@ function onCopy (index: number) {
     }
     .u-collapse-content {
       position: relative;
-      height: 0;
       overflow: hidden;
-      background-color: #fff;
-      transition: height .3s;
+      background-color: #ffffff;
+      transition: height .2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity .2s cubic-bezier(0.645, 0.045, 0.355, 1);
       .u-lang {
         position: absolute;
         right: 10px;
@@ -165,7 +177,7 @@ function onCopy (index: number) {
       }
       .u-text {
         padding: 16px;
-        color: rgba(0, 0, 0, 0.88);
+        color: rgba(0, 0, 0, .88);
         white-space: pre-wrap;
       }
     }

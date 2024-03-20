@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 /*
   参考文档：https://vueuse.org/integrations/useQRCode/
@@ -8,7 +9,7 @@ interface Props {
   value?: string // 扫描后的文本或地址
   size?: number // 二维码大小，单位px
   color?: string // 二维码颜色，Value must be in hex format (十六进制颜色值)
-  backgroundColor?: string // 二维码背景色，Value must be in hex format (十六进制颜色值)
+  bgColor?: string // 二维码背景色，Value must be in hex format (十六进制颜色值)
   bordered?: boolean // 是否有边框
   borderColor?: string // 边框颜色
   scale?: number // 每个black dots多少像素
@@ -24,29 +25,30 @@ const props = withDefaults(defineProps<Props>(), {
   value: '',
   size: 160,
   color: '#000',
-  backgroundColor: '#FFF',
+  bgColor: '#FFF',
   bordered: true,
   borderColor: '#0505050f',
   scale: 8,
   errorLevel: 'H' // 可选 L M Q H
 })
-
-// `qrcode` will be a ref of data URL
-const qrcode = useQRCode(props.value, {
-  errorCorrectionLevel: props.errorLevel,
-  type: 'image/png',
-  quality: 1,
-  margin: 3,
-  scale: props.scale, // 8px per modules(black dots)
-  color: {
-    dark: props.color, // 像素点颜色
-    light: props.backgroundColor // 背景色
-  }
+const qrcode = computed(() => {
+  // `qrcode` will be a ref of data URL
+  return useQRCode(props.value, {
+    errorCorrectionLevel: props.errorLevel,
+    type: 'image/png',
+    quality: 1,
+    margin: 3,
+    scale: props.scale, // 8px per modules(black dots)
+    color: {
+      dark: props.color, // 像素点颜色
+      light: props.bgColor // 背景色
+    }
+  })
 })
 </script>
 <template>
   <div class="m-qrcode" :class="{'bordered': bordered}" :style="`width: ${size}px; height: ${size}px; border-color: ${borderColor};`">
-    <img :src="qrcode" class="u-qrcode" alt="QRCode" />
+    <img :src="qrcode.value" class="u-qrcode" alt="QRCode" />
   </div>
 </template>
 <style lang="less" scoped>

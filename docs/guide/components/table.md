@@ -1,5 +1,8 @@
 # 表格 Table
 
+<BackTop />
+<Watermark fullscreen content="Vue Amazing UI" />
+
 <br/>
 
 *展示行列数据*
@@ -93,20 +96,22 @@ function onChange (pagination: {page: number, pageSize: number}) {
 
 ## 基本使用
 
-<Table
-  :columns="columns"
-  :data-source="tableData"
-  :total="total"
-  :loading="loading"
-  @change="onChange">
-<!-- 配置指定列数据 -->
-<template #name="record">
-    hello {{ record.name }}
-  </template>
-  <template #job="{ job, index }">
-    hi {{ job }}
-  </template>
-</Table>
+<ClientOnly>
+  <Table
+    :columns="columns"
+    :data-source="tableData"
+    :total="total"
+    :loading="loading"
+    @change="onChange">
+  <!-- 配置指定列数据 -->
+  <template #name="record">
+      hello {{ record.name }}
+    </template>
+    <template #job="{ job, index }">
+      hi {{ job }}
+    </template>
+  </Table>
+</ClientOnly>
 
 ::: details Show Code
 
@@ -214,7 +219,9 @@ function onChange (pagination: {page: number, pageSize: number}) {
 
 ## 加载中
 
-<Table :columns="columns" :loading="true" />
+<ClientOnly>
+  <Table :columns="columns" loading />
+</ClientOnly>
 
 ::: details Show Code
 
@@ -252,7 +259,7 @@ const columns = ref([
       ])
 </script>
 <template>
-  <Table :columns="columns" :loading="true" />
+  <Table :columns="columns" loading />
 </template>
 ```
 
@@ -260,7 +267,9 @@ const columns = ref([
 
 ## 暂无数据
 
-<Table :columns="columns" :total="0" />
+<ClientOnly>
+  <Table :columns="columns" :total="0" />
+</ClientOnly>
 
 ::: details Show Code
 
@@ -310,9 +319,9 @@ const columns = ref([
 -- | -- | -- | -- | --
 columns | 表格列的配置项 | Column[] | [] | false
 dataSource | 表格数据数组 | any[] | [] | false
-pagination | 分页器配置 | Pagination | { page: 1&#44; pageSize: 10 } | false
-showPagination | 是否显示分页器 | boolean | true | false
-hideOnSinglePage | 只有一页时是否隐藏分页器 | boolean | false
+pagination | 分页配置 | Pagination | { page: 1&#44; pageSize: 10 } | false
+showPagination | 是否显示分页 | boolean | true | false
+hideOnSinglePage | 只有 `1` 页时是否隐藏分页 | boolean | false
 total | 数据总数 | number | 0 | false
 loading | 是否加载中 | boolean | false | false
 

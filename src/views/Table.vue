@@ -81,7 +81,8 @@ function onChange (pagination: {page: number, pageSize: number}) {
 </script>
 <template>
   <div>
-    <h2 class="mb10">Table 表格基本使用</h2>
+    <h1>Table 表格</h1>
+    <h2 class="mt30 mb10">基本使用</h2>
     <Table
       :columns="columns"
       :dataSource="tableData"
@@ -94,39 +95,15 @@ function onChange (pagination: {page: number, pageSize: number}) {
       @change="onChange">
     <!-- 配置指定列数据 -->
     <template #name="record">
-        hello {{ record.name }}
-      </template>
-      <template #job="{ job, index }">
-        hi {{ job }}
-      </template>
+      hello {{ record.name }}
+    </template>
+    <template #job="{ job, index }">
+      hi {{ job }}
+    </template>
     </Table>
-    <h2 class="mt30 mb10">加载中表格 (loading: true)</h2>
-    <Table
-      :columns="columns"
-      :dataSource="[]"
-      :pagination="{
-        page: queryParams.page,
-        pageSize: queryParams.pageSize
-      }"
-      :showPagination="true"
-      :hideOnSinglePage="false"
-      :total="0"
-      :loading="true"
-      @change="onChange"
-    ></Table>
-    <h2 class="mt30 mb10">无数据表格 (total: 0)</h2>
-    <Table
-      :columns="columns"
-      :dataSource="[]"
-      :pagination="{
-        page: queryParams.page,
-        pageSize: queryParams.pageSize
-      }"
-      :showPagination="true"
-      :hideOnSinglePage="false"
-      :total="0"
-      :loading="false"
-      @change="onChange"
-    ></Table>
+    <h2 class="mt30 mb10">加载中</h2>
+    <Table :columns="columns" loading />
+    <h2 class="mt30 mb10">暂无数据</h2>
+    <Table :columns="columns" :total="0" />
   </div>
 </template>
