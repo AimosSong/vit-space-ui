@@ -74,8 +74,9 @@
         "clean": "rimraf ./dist",
         "docs:dev": "vitepress dev docs --port 8000 --open",
         "docs:build": "vitepress build docs",
-        "docs:deploy": "sh script/deploy.sh",
-        "pub": "sh script/publish.sh",
+        "docs:deploy": "sh scripts/deploy.sh",
+        "pub": "sh scripts/publish.sh",
+        "push": "sh scripts/push.sh",
         "preview": "vite preview",
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
